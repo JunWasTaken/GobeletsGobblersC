@@ -1,6 +1,6 @@
 #include <stdio.h>
 
 int main(){
-    printf("oui");
+    printf("non");
     return 0;
 }
