@@ -4,7 +4,7 @@ LDFLAGS=
 
 SOURCES=$(wildcard *.c)
 OBJECTS=$(SOURCES: .c=.o)
-EXECUTABLES=exec 
+EXECUTABLES=goblers 
 
 all:$(EXECUTABLES)
 	./$(EXECUTABLES)
@@ -16,4 +16,4 @@ $(OBJECTS): $(SOURCES)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm $(EXECUTABLES) $(OBJECTS)
+	del -f *.o *.exe 
