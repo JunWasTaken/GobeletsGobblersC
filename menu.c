@@ -46,7 +46,8 @@ void TourJeu(player x, board game){
         printf("Dans quelle ligne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
         row=choiceSelector(3);
         if (pieceSize>get_piece_size(game, column, row)){
-            place_piece(game, x, 1, (row-1), (column-1));
+            if (place_piece(game, x, 1, (row-1), (column-1)))
+                printf("pièce placée avec succès");
             printf("test\n");
         }
         else
