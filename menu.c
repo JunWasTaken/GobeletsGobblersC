@@ -40,12 +40,10 @@ void TourJeu(player x, board game){
     if (choix == 1){
         printf("Quelle taille de pièce voulez-vous jouer ? Petite, Moyenne ou Grande\n(Faire un choix entre 1 et 3) -> ");
         pieceSize=choiceSelector(3);
-
         while(!get_nb_piece_in_house(game, x, pieceSize)){
             printf("Veuillez faire un choix valide\n");
             pieceSize=choiceSelector(3);
         }
-
         printf("Dans quelle colonne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
         column=choiceSelector(3)-1;
 
