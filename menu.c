@@ -30,7 +30,8 @@ void affichagePlateau(board game){
 }
 
 void TourJeu(player x, board game){
-    int choix = 0, pieceSize=0, column=0, row=0;
+    int choix = 0, column=0, row=0;
+    unsigned int pieceSize=0; 
     printf("Que voulez-vous faire ?\n1-Placer un pion\n2-Déplacer un pion\n");
     choix = choiceSelector(2);
     if (choix==1){

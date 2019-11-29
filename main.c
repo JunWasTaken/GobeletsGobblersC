@@ -4,12 +4,9 @@
 #include "board.h"
 #include "menu.h"
 
-int choiceSelector(int x); 
-void TourJeu(player x, board game);
-
 int main(){
     board plateau;
-    player J1;
+    player J1=1;
     int x=0;
     printf("Bonjour et bienvenue dans Gobelet Gobblers, que voulez-vous faire ?\n1-Lancer une nouvelle partie\n2-gerer vos sauvegardes\n3-quitter\n");
     x=choiceSelector(3);
