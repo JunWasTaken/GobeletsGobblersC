@@ -35,6 +35,8 @@ void TourJeu(player x, board game){
     int choix = 0, column, row;
     unsigned int pieceSize=0; 
 
+    afficheVide();
+
     printf("Que voulez-vous faire ?\n1-Placer un pion\n2-Déplacer un pion\n");
     choix = choiceSelector(2);
 
@@ -66,6 +68,6 @@ void TourJeu(player x, board game){
                 printf("Position invalide\n");
         }
         
-        affichagePlateau(game);
+        //affichagePlateau(game);
     }
 }

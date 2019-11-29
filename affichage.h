@@ -3,6 +3,7 @@
 
 #include "board.h"
 
+void afficheVide();
 void affichagePlateau(board game);
 
 #endif

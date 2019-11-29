@@ -6,4 +6,9 @@
 int choiceSelector(int x);
 void TourJeu(player x, board game);
 
+typedef struct{
+	int x;
+	int y;
+} Vector2;
+
 #endif
