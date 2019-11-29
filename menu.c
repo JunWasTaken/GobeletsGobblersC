@@ -45,17 +45,13 @@ void TourJeu(player x, board game){
         column=choiceSelector(3)-1;
         printf("Dans quelle ligne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
         row=choiceSelector(3)-1;
-        if (pieceSize>get_piece_size(game, row, column)){
-            if (place_piece(game, x, SMALL, row, column))
-                printf("pièce placée avec succès");
-            printf("test\n");
-        }
-        else
-        {
-            printf("Impossible de placer la pièce à l'emplacement voulu");
-        }
+
+        printf("%d\n", get_piece_size(game, 0, 0));
+        int res = place_piece(game, x, pieceSize, row, column);
+        printf("%d\n", res);
+        
         printf("test 2\n");
-        affichagePlateau(game);
+        //affichagePlateau(game);
         printf("test 3\n");
     }
 }
