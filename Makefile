@@ -16,4 +16,4 @@ $(OBJECTS): $(SOURCES)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	del -f *.o *.exe 
+	rm -f *.exe 
