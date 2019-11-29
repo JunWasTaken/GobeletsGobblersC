@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include "board.h"
 
+typedef struct{
+    int x;
+    int y;
+} coord;
+
 int choiceSelector(int x){ 
     int choix;
     int returnValue=0;
@@ -19,6 +24,11 @@ int choiceSelector(int x){
     }while(choix < 1 || choix > x);
     printf("\n");
     return returnValue;
+}
+
+void saisieCoord(coord* casePlateau){
+    (*casePlateau).x = choiceSelector(3);
+    (*casePlateau).y = choiceSelector(3);
 }
 
 void affichagePlateau(board game){
@@ -60,6 +70,16 @@ board placementPion(board game, player x){ //fonction gérant le placement d'une
             printf("Position invalide\n");
     }
     affichagePlateau(game);
+}
+
+board deplacementPion(board game, player x){
+    coord caseInitiale, caseFinale;
+    coord* pci = &caseInitiale;
+    coord* pcf = &caseFinale;
+    saisieCoord(pci);
+    if(!get_piece_size(game, caseInitiale.x, caseInitiale.y)){
+        printf("oui\n");
+    }
 }
 
 void TourJeu(player x, board game){
