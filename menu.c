@@ -10,7 +10,7 @@ int choiceSelector(int x){
         printf("Votre Choix : ");
         scanf("%d", &choix);
         if (choix >= 1 && choix <= x){
-            returnValue = choix%3;
+            returnValue = choix;
         }
         else
         {
