@@ -30,6 +30,10 @@ int choiceSelector(int x){
     }
 }*/
 
+board placementPion(board game, player x){
+    printf("x");
+}
+
 void TourJeu(player x, board game){
     int choix = 0, column, row;
     unsigned int pieceSize=0; 
@@ -64,7 +68,6 @@ void TourJeu(player x, board game){
             case 3:
                 printf("Position invalide\n");
         }
-        
         affichagePlateau(game);
     }
 }
