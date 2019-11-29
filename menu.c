@@ -17,20 +17,21 @@ int choiceSelector(int x){
             printf("Veuillez saisir une valeur valide\n");
         }
     }while(choix < 1 || choix > x);
-    
+    printf("test choice selector\n");
     return returnValue;
 }
 
 void affichagePlateau(board game){
     for (int i=0; i<DIMENSIONS; i++){
         for (int j=0; j<DIMENSIONS; j++){
-            printf("%d", get_place_holder(game, i, j));
+            printf("%d ", get_place_holder(game, i, j));
         }
+        printf("\n");
     }
 }
 
 void TourJeu(player x, board game){
-    int choix = 0, column=0, row=0;
+    int choix = 0, column=0, row=0, res=4;
     unsigned int pieceSize=0; 
     printf("Que voulez-vous faire ?\n1-Placer un pion\n2-Déplacer un pion\n");
     choix = choiceSelector(2);
@@ -46,16 +47,15 @@ void TourJeu(player x, board game){
         printf("Dans quelle ligne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
         row=choiceSelector(3)-1;
         if (pieceSize>get_piece_size(game, row, column)){
+            printf("taille de la piece à la case souhaitée : %d\n", get_piece_size(game, row, column));
             if (place_piece(game, x, SMALL, row, column))
-                printf("pièce placée avec succès");
+                printf("pièce placée avec succès\n");
             printf("test\n");
         }
         else
         {
             printf("Impossible de placer la pièce à l'emplacement voulu");
         }
-        printf("test 2\n");
         affichagePlateau(game);
-        printf("test 3\n");
     }
 }
