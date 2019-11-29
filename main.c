@@ -6,14 +6,13 @@
 
 int main(){
     board plateau;
-    player J1=1;
     int x=0;
     printf("Bonjour et bienvenue dans Gobelet Gobblers, que voulez-vous faire ?\n1-Lancer une nouvelle partie\n2-gerer vos sauvegardes\n3-quitter\n");
     x=choiceSelector(3);
     if (x==1){
         plateau = new_game();
         printf("plateau creer\n");
-        TourJeu(J1, plateau);
+        TourJeu(PLAYER_1, plateau);
     }else if (x==2){
         printf("chargement des sauvegardes\n");
     }else
