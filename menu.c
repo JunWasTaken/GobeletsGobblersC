@@ -21,14 +21,14 @@ int choiceSelector(int x){
     return returnValue;
 }
 
-void affichagePlateau(board game){
+/*void affichagePlateau(board game){
     for (int i=0; i<DIMENSIONS; i++){
         for (int j=0; j<DIMENSIONS; j++){
-            printf("%d ", get_place_holder(game, i, j));
+            printf("%d ", get_piece_size(game, i, j));
         }
         printf("\n");
     }
-}
+}*/
 
 void TourJeu(player x, board game){
     int choix = 0, column=0, row=0, res=4;
