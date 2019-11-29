@@ -12,7 +12,7 @@ int main(){
     switch(x){
         case 1:
             plateau = new_game();
-            printf("plateau creer\n");
+            printf("plateau cree\n");
             for (int i=0; i<3; i++){
                 TourJeu(J1, plateau);
             }
