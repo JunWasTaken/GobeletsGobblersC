@@ -152,7 +152,6 @@ void destroy_game(board game);
  * @return the player holding the biggest piece of that square, NONE if no player
  * is holding the place or if the request is misplaced.
  */
-
 player get_place_holder(board game, int line, int column);
 
 /**

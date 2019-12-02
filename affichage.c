@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "board.h"
-#include "menu.h"
+#include "tour.h"
 
 #define BLEU "\033[0;94m"
 #define BLEU_ "\033[1;94m"
