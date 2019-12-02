@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include "board.h"
 
+void affichagePlateau(board game){
+    for (int i=0; i<DIMENSIONS; i++){
+        for (int j=0; j<DIMENSIONS; j++){
+            printf("%d ", get_piece_size(game, i, j));
+        }
+        printf("\n");
+    }
+}
+
 typedef struct{
     int x;
     int y;
@@ -27,7 +36,9 @@ int choiceSelector(int x){
 }
 
 void saisieCoord(coord* casePlateau){
+    printf("Saisissez la colonne -> ");
     (*casePlateau).x = choiceSelector(3);
+    printf("Saisissez la ligne -> ");
     (*casePlateau).y = choiceSelector(3);
 }
 
@@ -60,7 +71,7 @@ board placementPion(board game, player x){ //fonction gérant le placement d'une
         case 3:
             printf("Position invalide\n");
     }
-    affichagePlateau(game);
+    return game;
 }
 
 board deplacementPion(board game, player x){
@@ -68,6 +79,7 @@ board deplacementPion(board game, player x){
     coord* pci = &caseInitiale;
     coord* pcf = &caseFinale;
     int res=0;
+    printf("De quelle case voulez-vous saisir la pièce ?\n");
     saisieCoord(pci);
     saisieCoord(pcf);
     res=move_piece(game, caseInitiale.x, caseInitiale.y, caseFinale.x, caseFinale.y);
@@ -90,7 +102,7 @@ board deplacementPion(board game, player x){
             }
             break; 
     }
-    affichagePlateau(game);
+    return game;
 }
 
 void TourJeu(player x, board game){
@@ -102,8 +114,10 @@ void TourJeu(player x, board game){
     switch (choix){
         case 1:
             game = placementPion(game, x);
+            affichagePlateau(game);
             break;
         case 2:
+            game = deplacementPion(game, x);
             affichagePlateau(game);
             break;
     }
