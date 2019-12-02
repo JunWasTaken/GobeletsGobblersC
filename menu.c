@@ -31,15 +31,6 @@ void saisieCoord(coord* casePlateau){
     (*casePlateau).y = choiceSelector(3);
 }
 
-void affichagePlateau(board game){
-    for (int i=0; i<DIMENSIONS; i++){
-        for (int j=0; j<DIMENSIONS; j++){
-            printf("%d ", get_piece_size(game, i, j));
-        }
-        printf("\n");
-    }
-}
-
 board placementPion(board game, player x){ //fonction gérant le placement d'une pièce sur le plateau
     int column=0, row=0;
     unsigned int pieceSize=0;
@@ -76,10 +67,30 @@ board deplacementPion(board game, player x){
     coord caseInitiale, caseFinale;
     coord* pci = &caseInitiale;
     coord* pcf = &caseFinale;
+    int res=0;
     saisieCoord(pci);
-    if(!get_piece_size(game, caseInitiale.x, caseInitiale.y)){
-        printf("oui\n");
+    saisieCoord(pcf);
+    res=move_piece(game, caseInitiale.x, caseInitiale.y, caseFinale.x, caseFinale.y);
+    switch (res){
+        case 0:
+            printf("pièce placée avec succès\n");
+            break;
+        case 1:
+            printf("Il n'y a pas de pièce à la case initiale\n");
+            break;
+        case 2:
+            printf("La pièce est trop petite pour la case de Destination\n");
+            break;
+        case 3:
+            printf("Entrée illégale : ");
+            if (caseInitiale.x>3 || caseFinale.x>3)
+                printf("Ligne trop longue\n");
+            else{
+                printf("Colonne trop longue\n");
+            }
+            break; 
     }
+    affichagePlateau(game);
 }
 
 void TourJeu(player x, board game){
