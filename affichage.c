@@ -11,7 +11,7 @@
 #define BLANC "\033[37m"
 #define CLEARSCR "\033[2J"
 
-#define GRID_SIZE 31            //Multiple de 6 + 1
+#define GRID_SIZE 25            //Multiple de 6 + 1
 #define STARTX 5
 #define STARTY 20
 
@@ -53,7 +53,7 @@ void afficheVide(){
                 }
             }
         }
-        printPos.x++;                               //Remplace le '\n' de fin de ligne qui retournerait au début à gauche
+        printPos.x++;                               //Remplace le '\n' de fin de ligne (qui retournerait au début à gauche)
         movePrintCursor(printPos);
     }
     printPos.y = 1;
@@ -61,17 +61,26 @@ void afficheVide(){
 }
 
 
-void drawPiece(player pl, size si, Vector2 pos){
-    int w = (GRID_SIZE-4)/3;
+void drawPiece(player pl, size si, int row, int column){
+    int width = (GRID_SIZE-4)/3;
+
+    Vector2 pos;
+    pos.x = 1 + STARTX + (row * GRID_SIZE)/3;
+    pos.y = 1 + STARTY + (column * GRID_SIZE * 2)/3;
+
+    if (column > 1)
+        pos.y--;
+    
+    movePrintCursor(pos);
+
     if (pl == 1)
         printf(BLEU);
     else
         printf(ROUGE);
 
-    movePrintCursor(pos);
     printf("X");
 
-    movePrintCursor((Vector2){STARTX + GRID_SIZE});
+    movePrintCursor((Vector2){STARTX + GRID_SIZE});         //Retour en dessous du plateau
     printf(BLANC);
 }
 
@@ -82,7 +91,11 @@ void affichagePlateau(board game){
     get_piece_size(game, i, j));
     */
 
-    drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + GRID_SIZE/2, STARTY + GRID_SIZE - 1});
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++){
+            drawPiece(PLAYER_1, MEDIUM, i, j);
+        }
+    }
     //drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + GRID_SIZE/3 + 1, STARTY + (GRID_SIZE*2)/3 + 1});
     //drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + (GRID_SIZE*2)/3 - 1, STARTY + (GRID_SIZE*4)/3 - 2});
 }
