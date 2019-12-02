@@ -4,11 +4,19 @@
 #include "board.h"
 #include "menu.h"
 
+void menu();
+
 int main(){
+    menu();
+    return 0;
+}
+
+void menu(){
     board plateau;
     player J1 = 1;
+    int x=0;
     printf("Bonjour et bienvenue dans Gobelet Gobblers, que voulez-vous faire ?\n1-Lancer une nouvelle partie\n2-gerer vos sauvegardes\n3-quitter\n");
-    int x = choiceSelector(3);
+    x = choiceSelector(3);
     switch(x){
         case 1:
             plateau = new_game();
@@ -23,6 +31,4 @@ int main(){
         default:
             printf("Au revoir *start playing \"La Marseillaise\" \n");
     }
-    
-    return 0;
 }
