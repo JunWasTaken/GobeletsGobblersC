@@ -15,11 +15,9 @@
 #define STARTX 5
 #define STARTY 20
 
-
 void movePrintCursor(Vector2 pos){
     printf("\033[%d;%df", pos.x, pos.y);
 }
-
 
 void afficheVide(){
     int n = GRID_SIZE;

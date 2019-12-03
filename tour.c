@@ -8,6 +8,15 @@ typedef struct{
     int y;
 } coord;
 
+/*void affichagePlateau(board game){
+    for (int i=0; i<DIMENSIONS; i++){
+        for (int j=0; j<DIMENSIONS; j++){
+            printf("%d ", get_piece_size(game, i, j));
+        }
+        printf("\n");
+    }
+}*/
+
 int choiceSelector(int x){ 
     int choix;
     int returnValue=0;
@@ -118,10 +127,13 @@ void TourJeu(player x, board game){
 }
 
 void Partie(player x, player y, board game){
-    player current = x;
+    player current = x, winner=0;
     int cpt = 0;
     do{
         TourJeu(current, game);
         current = next_player(current);
-    }while (!(get_winner(game)));
+        winner=get_winner(game);
+    }while (!(winner));
+    if (winner!=0)
+        printf("C'est fini, le joueur %d a gagné :D\n", winner);
 }
