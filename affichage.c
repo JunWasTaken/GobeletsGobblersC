@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "board.h"
 #include "tour.h"
 
@@ -59,12 +60,50 @@ void afficheVide(){
 }
 
 
-void drawPiece(player pl, size si, int row, int column){
+/*void drawCircle(int x, int y, int r, int width){
+    for (int i = 0; i < width; i++) {
+		for (int j = 0; j < width; j++) {
+			int mid = width / 2, x = mid - j, y = mid - i + 1;
+
+			if (sqrt(x * x + y * y) <= r) {
+				printf("#");
+                if (j < width-1)
+                    printf(" ");
+			}
+			else{
+				printf(" ");
+                if (j < width-1)
+                    printf(" ");
+			}
+		}
+        movePrintCursor((Vector2){x+i, y});
+	}
+}*/
+
+void drawCircle(int x, int y, int r, int width){
+    float mid = width / 2;
+    for (int i = 0; i < width+1; i++) {
+		for (int j = 0; j < width*2; j++) {
+		    float x = mid - j/2, y = mid - i + 1;
+
+			if (sqrt(x * x + y * y) <= r) {
+				printf("█");
+			}
+			else{
+				printf(" ");
+			}
+		}
+        movePrintCursor((Vector2){x+i, y});
+	}
+}
+
+
+void drawPiece(player pl, size siz, int row, int column){
     int width = (GRID_SIZE-4)/3;
 
     Vector2 pos;
     pos.x = 1 + STARTX + (row * GRID_SIZE)/3;
-    pos.y = 1 + STARTY + (column * GRID_SIZE * 2)/3;
+    pos.y = 2 + STARTY + (column * GRID_SIZE * 2)/3;
 
     if (column > 1)
         pos.y--;
@@ -76,7 +115,12 @@ void drawPiece(player pl, size si, int row, int column){
     else
         printf(ROUGE);
 
-    printf("X");
+    if (siz == LARGE)
+        drawCircle(pos.x, pos.y, width/2, width);
+    else if (siz == MEDIUM)
+        drawCircle(pos.x+1, pos.y+1, (width-2)/2, width-2);
+    else if (siz == SMALL)
+        drawCircle(pos.x+2, pos.y+3, (width-4)/2, width-4);
 
     movePrintCursor((Vector2){STARTX + GRID_SIZE});         //Retour en dessous du plateau
     printf(BLANC);
@@ -89,11 +133,14 @@ void affichagePlateau(board game){
     get_piece_size(game, i, j));
     */
 
-    for (int i = 0; i < 3; i++){
-        for (int j = 0; j < 3; j++){
-            drawPiece(PLAYER_1, MEDIUM, i, j);
-        }
-    }
+
+        //T E S T
+    drawPiece(PLAYER_1, SMALL, 0, 0);
+    drawPiece(PLAYER_1, MEDIUM, 0, 1);
+    drawPiece(PLAYER_1, LARGE, 0, 2);
+    drawPiece(PLAYER_2, SMALL, 1, 0);
+    drawPiece(PLAYER_2, MEDIUM, 1, 1);
+    drawPiece(PLAYER_2, LARGE, 1, 2);
     //drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + GRID_SIZE/3 + 1, STARTY + (GRID_SIZE*2)/3 + 1});
     //drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + (GRID_SIZE*2)/3 - 1, STARTY + (GRID_SIZE*4)/3 - 2});
 }
