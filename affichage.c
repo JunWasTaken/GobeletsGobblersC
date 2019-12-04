@@ -133,7 +133,15 @@ void affichagePlateau(board game){
     get_piece_size(game, i, j));
     */
 
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++){
+            if (get_piece_size(game, i, j) != NONE)
+                drawPiece(get_place_holder(game, i, j), get_piece_size(game, i, j), i, j);
+        }
+    }
 
+
+    /*
         //T E S T
     drawPiece(PLAYER_1, SMALL, 0, 0);
     drawPiece(PLAYER_1, MEDIUM, 0, 1);
@@ -141,6 +149,7 @@ void affichagePlateau(board game){
     drawPiece(PLAYER_2, SMALL, 1, 0);
     drawPiece(PLAYER_2, MEDIUM, 1, 1);
     drawPiece(PLAYER_2, LARGE, 1, 2);
+    */
     //drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + GRID_SIZE/3 + 1, STARTY + (GRID_SIZE*2)/3 + 1});
     //drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + (GRID_SIZE*2)/3 - 1, STARTY + (GRID_SIZE*4)/3 - 2});
 }
