@@ -135,7 +135,6 @@ void TourJeu(player x, board game){
     int choix = 0, column, row;
     unsigned int pieceSize=0; 
 
-    afficheVide();
     affichagePlateau(game);
     printf("C'est au tour du joueur %d de jouer ;)\n", x);
     printf("Que voulez-vous faire ?\n1-Placer un pion\n2-Déplacer un pion\n");
