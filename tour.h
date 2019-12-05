@@ -3,7 +3,10 @@
 
 #include "board.h"
 
-typedef struct coord;
+typedef struct{
+	int x; 
+	int y;
+} coord;
 
 /**
  * @brief fonction permettant de faire des choix allant de 1 à une borne x définie par l'utilisateur
