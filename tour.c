@@ -95,36 +95,46 @@ board placementPion(board game, player x){
  * 
  * @return le plateau modifié
  */
-board deplacementPion(board game, player x){
+board deplacementPion(board game, player pl){
     coord caseInitiale, caseFinale;
     coord* pci = &caseInitiale;
     coord* pcf = &caseFinale;
-    int res=0;
-    
-    printf("De quelle case voulez-vous saisir la pièce ?\n");
-    saisieCoord(pci);
-    saisieCoord(pcf);
+    int res = 0, invalidPl = 0;
 
-    res=move_piece(game, (caseInitiale.x-1), (caseInitiale.y-1), (caseFinale.x-1), (caseFinale.y-1));
-    switch (res){
-        case 0:
-            printf("pièce placée avec succès\n");
-            break;
-        case 1:
-            printf("Il n'y a pas de pièce à la case initiale\n");
-            break;
-        case 2:
-            printf("La pièce est trop petite pour la case de Destination\n");
-            break;
-        case 3:
-            printf("Entrée illégale : ");
-            if (caseInitiale.x>3 || caseFinale.x>3)
-                printf("Ligne trop longue\n");
-            else{
-                printf("Colonne trop longue\n");
+    do {
+        printf("De quelle case voulez-vous saisir la pièce ?\n");
+        saisieCoord(pci);
+        saisieCoord(pcf);
+        
+        invalidPl = (get_place_holder(game, (caseInitiale.x-1), (caseInitiale.y-1)) != pl);
+
+        if (!invalidPl){
+            res=move_piece(game, (caseInitiale.x-1), (caseInitiale.y-1), (caseFinale.x-1), (caseFinale.y-1));
+            switch (res){
+                case 0:
+                    printf("pièce placée avec succès\n");
+                    break;
+                case 1:
+                    printf("Il n'y a pas de pièce à la case initiale\n");
+                    break;
+                case 2:
+                    printf("La pièce est trop petite pour la case de Destination\n");
+                    break;
+                case 3:
+                    printf("Entrée illégale : ");
+                    if (caseInitiale.x>3 || caseFinale.x>3)
+                        printf("Ligne trop longue\n");
+                    else{
+                        printf("Colonne trop longue\n");
+                    }
             }
-            break; 
-    }
+        }
+        else{
+            printf("Cette pièce ne vous appartient pas !\n");
+        }
+    
+    } while (invalidPl);
+
     return game;
 }
 

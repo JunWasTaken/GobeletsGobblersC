@@ -16,12 +16,8 @@
 #define STARTX 5
 #define STARTY 20
 
-typedef struct{
-	int x;
-	int y;
-} Vector2;
 
-void movePrintCursor(Vector2 pos){
+void movePrintCursor(coord pos){
     printf("\033[%d;%df", pos.x, pos.y);
 }
 
@@ -30,7 +26,7 @@ void afficheVide(){
     int a = 0, b = n/3, c = (2*n)/3, d = n-1;       //Début, 1/3, 2/3, fin : tracé des lignes
 
     printf(CLEARSCR);                               //ANSI code : efface l'écran
-    Vector2 printPos = {STARTX, STARTY};
+    coord printPos = {STARTX, STARTY};
     movePrintCursor(printPos);                      //Déplacement du curseur (coin sup gauche)
 
     int angleCpt = 0;
@@ -110,7 +106,7 @@ void drawCircle(int x, int y, int r, int width){
 				printf(" ");
 			}
 		}
-        movePrintCursor((Vector2){x+i, y});
+        movePrintCursor((coord){x+i, y});
 	}
 }
 
@@ -118,7 +114,7 @@ void drawCircle(int x, int y, int r, int width){
 void drawPiece(player pl, size siz, int row, int column){
     int width = (GRID_SIZE-4)/3;
 
-    Vector2 pos;
+    coord pos;
     pos.x = 1 + STARTX + (row * GRID_SIZE)/3;
     pos.y = 2 + STARTY + (column * GRID_SIZE * 2)/3;
 
@@ -139,7 +135,7 @@ void drawPiece(player pl, size siz, int row, int column){
     else if (siz == SMALL)
         drawCircle(pos.x+2, pos.y+3, (width-4)/2, width-4);
 
-    movePrintCursor((Vector2){STARTX + GRID_SIZE});         //Retour en dessous du plateau
+    movePrintCursor((coord){STARTX + GRID_SIZE});         //Retour en dessous du plateau
     printf(BLANC);
 }
 
