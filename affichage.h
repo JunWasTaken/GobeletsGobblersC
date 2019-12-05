@@ -5,6 +5,6 @@
 
 void afficheVide();
 void affichagePlateau(board game);
-
+void affichageInventory(board game, player x);
 
 #endif
