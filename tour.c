@@ -8,15 +8,6 @@ typedef struct{
     int y;
 } coord;
 
-/*void affichagePlateau(board game){
-    for (int i=0; i<DIMENSIONS; i++){
-        for (int j=0; j<DIMENSIONS; j++){
-            printf("%d ", get_piece_size(game, i, j));
-        }
-        printf("\n");
-    }
-}*/
-
 int choiceSelector(int x){ 
     int choix;
     int returnValue=0;
@@ -38,9 +29,9 @@ int choiceSelector(int x){
 
 void saisieCoord(coord* casePlateau){
     printf("Saisissez la colonne -> ");
-    (*casePlateau).x = choiceSelector(3);
+    casePlateau->x = choiceSelector(3);
     printf("Saisissez la ligne -> ");
-    (*casePlateau).y = choiceSelector(3);
+    casePlateau->y = choiceSelector(3);
 }
 
 board placementPion(board game, player x){ //fonction gérant le placement d'une pièce sur le plateau
@@ -76,14 +67,13 @@ board placementPion(board game, player x){ //fonction gérant le placement d'une
 }
 
 board deplacementPion(board game, player x){
-    coord caseInitiale, caseFinale;
-    coord* pci = &caseInitiale;
-    coord* pcf = &caseFinale;
+    coord* pci;
+    coord* pcf;
     int res=0;
     printf("De quelle case voulez-vous saisir la pièce ?\n");
     saisieCoord(pci);
     saisieCoord(pcf);
-    res=move_piece(game, caseInitiale.x, caseInitiale.y, caseFinale.x, caseFinale.y);
+    res=move_piece(game, pci->x, pci->y, pcf->x, pcf->y);
     switch (res){
         case 0:
             printf("pièce placée avec succès\n");
@@ -96,7 +86,7 @@ board deplacementPion(board game, player x){
             break;
         case 3:
             printf("Entrée illégale : ");
-            if (caseInitiale.x>3 || caseFinale.x>3)
+            if (pci->x>3 || pcf->x>3)
                 printf("Ligne trop longue\n");
             else{
                 printf("Colonne trop longue\n");
@@ -112,7 +102,7 @@ void TourJeu(player x, board game){
 
     afficheVide();
     affichagePlateau(game);
-    printf("C'est au tour du joueur %d de jouer ;)", x);
+    printf("C'est au tour du joueur %d de jouer ;)\n", x);
     printf("Que voulez-vous faire ?\n1-Placer un pion\n2-Déplacer un pion\n");
     choix = choiceSelector(2);
         
@@ -134,6 +124,7 @@ void Partie(player x, player y, board game){
         current = next_player(current);
         winner=get_winner(game);
     }while (!(winner));
+    affichagePlateau(game);
     if (winner!=0)
         printf("C'est fini, le joueur %d a gagné :D\n", winner);
 }
