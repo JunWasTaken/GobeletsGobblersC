@@ -33,9 +33,9 @@ int choiceSelector(int x){
  * @param casePlateau -> la case du plateau à saisir les coordonnées
  */ 
 void saisieCoord(coord* casePlateau){
-    printf("Saisissez la colonne -> ");
-    casePlateau->x = choiceSelector(3);
     printf("Saisissez la ligne -> ");
+    casePlateau->x = choiceSelector(3);
+    printf("Saisissez la colonne -> ");
     casePlateau->y = choiceSelector(3);
 }
 
@@ -61,11 +61,6 @@ board placementPion(board game, player x){
         printf("Veuillez faire un choix valide\n");
         pieceSize=choiceSelector(3);
     }
-    /*printf("Dans quelle colonne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
-    column=choiceSelector(3)-1;
-
-    printf("Dans quelle ligne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
-    row=choiceSelector(3)-1;*/
 
     printf("Saisir la case de destination\n");
     saisieCoord(pcd);
