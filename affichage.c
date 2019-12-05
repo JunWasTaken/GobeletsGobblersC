@@ -154,3 +154,31 @@ void affichagePlateau(board game){
         }
     }
 }
+
+void affichageInventory(board game, player x){
+    for (int i=1; i<=3; i++){
+        switch(i){
+            case 1:
+                printf("Nombre de petites pièces : ");
+            break;
+            case 2:
+                printf("Nombre de pièces moyennes : ");
+            break;
+            case 3:
+                printf("Nombre de grandes pièces : ");
+            break;
+        }
+        for (int j=0; j<get_nb_piece_in_house(game, x, i); j++){
+            char* color;
+            if (x==1)
+                color=BLEU;
+            else{
+                color=ROUGE;
+            }
+            printf("%s%s", color, "* ");
+        }
+        printf(BLANC);
+        printf("\n");
+    }
+    printf("\n");
+}
