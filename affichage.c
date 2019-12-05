@@ -28,6 +28,7 @@ void afficheVide(){
     Vector2 printPos = {STARTX, STARTY};
     movePrintCursor(printPos);                      //Déplacement du curseur (coin sup gauche)
 
+    int angleCpt = 0;
     for (int i = 0; i < n; i++){
         for (int j = 0; j < n; j++){
             int ti = (i == a || i == b || i == c || i == d);
@@ -37,18 +38,49 @@ void afficheVide(){
             }
             else {
                 if (ti && tj){
-                    if (j != d)                     //Fin de ligne
-                        printf("+-");
-                    else
-                        printf("+");
+                    switch(angleCpt){
+                        case 0:
+                            printf("┌─");
+                            break;
+                        case 1:
+                        case 2:
+                            printf("┬─");
+                            break;
+                        case 3:
+                            printf("┐");
+                            break;
+                        case 4:
+                        case 8:
+                            printf("├─");
+                            break;
+                        case 5:
+                        case 6:
+                        case 9:
+                        case 10:
+                            printf("┼─");
+                            break;
+                        case 7:
+                        case 11:
+                            printf("┤");
+                            break;
+                        case 12:
+                            printf("└─");
+                            break;
+                        case 13:
+                        case 14:
+                            printf("┴─");
+                            break;
+                        case 15:
+                            printf("┘");
+                    }
+
+                    angleCpt++;
                 }
                 else {
                     if (tj)
-                        printf("| ");               //Lignes verticales
-                        //printf("%d ", i%10);
+                        printf("│ ");               //Lignes verticales
                     else if (ti)
-                        printf("--");               //Lignes horizontales
-                        //printf("%d ", j%10);
+                        printf("──");               //Lignes horizontales
                 }
             }
         }
@@ -59,26 +91,6 @@ void afficheVide(){
     movePrintCursor(printPos);
 }
 
-
-/*void drawCircle(int x, int y, int r, int width){
-    for (int i = 0; i < width; i++) {
-		for (int j = 0; j < width; j++) {
-			int mid = width / 2, x = mid - j, y = mid - i + 1;
-
-			if (sqrt(x * x + y * y) <= r) {
-				printf("#");
-                if (j < width-1)
-                    printf(" ");
-			}
-			else{
-				printf(" ");
-                if (j < width-1)
-                    printf(" ");
-			}
-		}
-        movePrintCursor((Vector2){x+i, y});
-	}
-}*/
 
 void drawCircle(int x, int y, int r, int width){
     float mid = width / 2;
@@ -128,10 +140,7 @@ void drawPiece(player pl, size siz, int row, int column){
 
 
 void affichagePlateau(board game){
-    /*
-    get_place_holder(game, i, j);
-    get_piece_size(game, i, j));
-    */
+   afficheVide();
 
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
@@ -139,17 +148,4 @@ void affichagePlateau(board game){
                 drawPiece(get_place_holder(game, i, j), get_piece_size(game, i, j), i, j);
         }
     }
-
-
-    /*
-        //T E S T
-    drawPiece(PLAYER_1, SMALL, 0, 0);
-    drawPiece(PLAYER_1, MEDIUM, 0, 1);
-    drawPiece(PLAYER_1, LARGE, 0, 2);
-    drawPiece(PLAYER_2, SMALL, 1, 0);
-    drawPiece(PLAYER_2, MEDIUM, 1, 1);
-    drawPiece(PLAYER_2, LARGE, 1, 2);
-    */
-    //drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + GRID_SIZE/3 + 1, STARTY + (GRID_SIZE*2)/3 + 1});
-    //drawPiece(PLAYER_1, MEDIUM, (Vector2){STARTX + (GRID_SIZE*2)/3 - 1, STARTY + (GRID_SIZE*4)/3 - 2});
 }
