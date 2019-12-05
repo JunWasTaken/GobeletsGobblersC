@@ -12,13 +12,41 @@
 #define BLANC "\033[37m"
 #define CLEARSCR "\033[2J"
 
-#define GRID_SIZE 25            //Multiple de 6 + 1
+#define GRID_SIZE 19            //Multiple de 6 + 1
 #define STARTX 5
-#define STARTY 20
+#define STARTY 50
 
 
 void movePrintCursor(coord pos){
     printf("\033[%d;%df", pos.x, pos.y);
+}
+
+void affichageInventory(board game, player x){
+    for (int i=1; i<=3; i++){
+        switch(i){
+            case 1:
+                printf("Nombre de petites pièces : ");
+            break;
+            case 2:
+                printf("Nombre de pièces moyennes : ");
+            break;
+            case 3:
+                printf("Nombre de grandes pièces : ");
+            break;
+        }
+        for (int j=0; j<get_nb_piece_in_house(game, x, i); j++){
+            char* color;
+            if (x==1)
+                color=BLEU;
+            else{
+                color=ROUGE;
+            }
+            printf("%s%s", color, "* ");
+        }
+        printf(BLANC);
+        printf("\n");
+    }
+    printf("\n");
 }
 
 void afficheVide(){
@@ -141,8 +169,7 @@ void drawPiece(player pl, size siz, int row, int column){
 
 
 void affichagePlateau(board game){
-   afficheVide();
-
+    afficheVide();
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
             if (get_piece_size(game, i, j) != NONE)
@@ -151,30 +178,4 @@ void affichagePlateau(board game){
     }
 }
 
-void affichageInventory(board game, player x){
-    for (int i=1; i<=3; i++){
-        switch(i){
-            case 1:
-                printf("Nombre de petites pièces : ");
-            break;
-            case 2:
-                printf("Nombre de pièces moyennes : ");
-            break;
-            case 3:
-                printf("Nombre de grandes pièces : ");
-            break;
-        }
-        for (int j=0; j<get_nb_piece_in_house(game, x, i); j++){
-            char* color;
-            if (x==1)
-                color=BLEU;
-            else{
-                color=ROUGE;
-            }
-            printf("%s%s", color, "* ");
-        }
-        printf(BLANC);
-        printf("\n");
-    }
-    printf("\n");
-}
+
