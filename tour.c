@@ -70,7 +70,7 @@ board placementPion(board game, player x){
     printf("Saisir la case de destination\n");
     saisieCoord(pcd);
         
-    int res = place_piece(game, x, pieceSize, row, column);
+    int res = place_piece(game, x, pieceSize, (caseDestination.x-1), (caseDestination.y-1));
     switch (res){
         case 0:
             printf("Piece placée avec succès\n");
@@ -108,7 +108,7 @@ board deplacementPion(board game, player x){
     printf("De quelle case voulez-vous saisir la pièce ?\n");
     saisieCoord(pci);
     saisieCoord(pcf);
-    res=move_piece(game, caseInitiale.x, caseInitiale.y, caseFinale.x, caseFinale.y);
+    res=move_piece(game, (caseInitiale.x-1), (caseInitiale.y-1), (caseFinale.x-1), (caseFinale.y-1));
     switch (res){
         case 0:
             printf("pièce placée avec succès\n");
