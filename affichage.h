@@ -6,4 +6,5 @@
 void afficheVide();
 void affichagePlateau(board game);
 
+
 #endif

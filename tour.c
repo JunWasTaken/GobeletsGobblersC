@@ -27,6 +27,11 @@ int choiceSelector(int x){
     return returnValue;
 }
 
+/**
+ * @brief Saisie les coordonnées d'une case manuellement
+ * 
+ * @param casePlateau -> la case du plateau à saisir les coordonnées
+ */ 
 void saisieCoord(coord* casePlateau){
     printf("Saisissez la colonne -> ");
     casePlateau->x = choiceSelector(3);
@@ -34,7 +39,20 @@ void saisieCoord(coord* casePlateau){
     casePlateau->y = choiceSelector(3);
 }
 
-board placementPion(board game, player x){ //fonction gérant le placement d'une pièce sur le plateau
+/**
+ * @brief fonction gérant le placement d'une pièce sur le plateau
+ * 
+ * La fonction commence par demander à l'utilisateur de saisir la taille de la pièce 
+ * puis les coordonnées de la case de destination. Elle appelle ensuite la fonction place_piece de board.h.
+ * Elle affiche un résultat en fonction du résultat de cette dernière.
+ * 
+ * @param game -> le plateau sur lequel le pion sera placé
+ * @param x -> le jpueur qui est en train de placer le pion
+ * @return le plateau modifié
+ */ 
+board placementPion(board game, player x){ 
+    coord caseDestination;
+    coord* pcd = &caseDestination;
     int column=0, row=0;
     unsigned int pieceSize=0;
     printf("Quelle taille de pièce voulez-vous jouer ? Petite, Moyenne ou Grande\n(Faire un choix entre 1 et 3) -> ");
@@ -43,11 +61,14 @@ board placementPion(board game, player x){ //fonction gérant le placement d'une
         printf("Veuillez faire un choix valide\n");
         pieceSize=choiceSelector(3);
     }
-    printf("Dans quelle colonne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
+    /*printf("Dans quelle colonne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
     column=choiceSelector(3)-1;
 
     printf("Dans quelle ligne voulez-vous la placer\n(Faire un choix entre 1 et 3) -> ");
-    row=choiceSelector(3)-1;
+    row=choiceSelector(3)-1;*/
+
+    printf("Saisir la case de destination\n");
+    saisieCoord(pcd);
         
     int res = place_piece(game, x, pieceSize, row, column);
     switch (res){
@@ -66,14 +87,28 @@ board placementPion(board game, player x){ //fonction gérant le placement d'une
     return game;
 }
 
+/**
+ * @brief fonction gérant le déplacement des pions
+ * 
+ * La fonction demande d'abord à l'utilisateur de saisir les coordonnées de la case à prendre le pion,
+ * elle lui demande ensuite de saisir les coordonnées de destination. 
+ * 
+ * Elle appelle la fonction move_piece de board.h et affiche un commentaire correspondant au résultat de cette dernière
+ * 
+ * @param game -> le plateau que nous allons utiliser pour déplacer les pièces 
+ * @param x -> le joueur dont c'est le tour, il est utilisé pour voir si la pièce à la case choisie lui appartient bien
+ * 
+ * @return le plateau modifié
+ */
 board deplacementPion(board game, player x){
-    coord* pci;
-    coord* pcf;
+    coord caseInitiale, caseFinale;
+    coord* pci = &caseInitiale;
+    coord* pcf = &caseFinale;
     int res=0;
     printf("De quelle case voulez-vous saisir la pièce ?\n");
     saisieCoord(pci);
     saisieCoord(pcf);
-    res=move_piece(game, pci->x, pci->y, pcf->x, pcf->y);
+    res=move_piece(game, caseInitiale.x, caseInitiale.y, caseFinale.x, caseFinale.y);
     switch (res){
         case 0:
             printf("pièce placée avec succès\n");
@@ -86,7 +121,7 @@ board deplacementPion(board game, player x){
             break;
         case 3:
             printf("Entrée illégale : ");
-            if (pci->x>3 || pcf->x>3)
+            if (caseInitiale.x>3 || caseFinale.x>3)
                 printf("Ligne trop longue\n");
             else{
                 printf("Colonne trop longue\n");

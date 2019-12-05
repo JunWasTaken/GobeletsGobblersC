@@ -16,6 +16,11 @@
 #define STARTX 5
 #define STARTY 20
 
+typedef struct{
+	int x;
+	int y;
+} Vector2;
+
 void movePrintCursor(Vector2 pos){
     printf("\033[%d;%df", pos.x, pos.y);
 }
