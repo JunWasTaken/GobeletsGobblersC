@@ -100,9 +100,11 @@ board deplacementPion(board game, player x){
     coord* pci = &caseInitiale;
     coord* pcf = &caseFinale;
     int res=0;
+    
     printf("De quelle case voulez-vous saisir la pièce ?\n");
     saisieCoord(pci);
     saisieCoord(pcf);
+
     res=move_piece(game, (caseInitiale.x-1), (caseInitiale.y-1), (caseFinale.x-1), (caseFinale.y-1));
     switch (res){
         case 0:
