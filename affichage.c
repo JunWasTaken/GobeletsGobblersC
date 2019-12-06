@@ -14,12 +14,13 @@
 
 #define GRID_SIZE 25            //Multiple de 6 + 1
 #define STARTX 5
-#define STARTY 20
+#define STARTY 50
 
 
 void movePrintCursor(coord pos){
     printf("\033[%d;%df", pos.x, pos.y);
 }
+
 
 void afficheVide(){
     int n = GRID_SIZE;
@@ -140,8 +141,7 @@ void drawPiece(player pl, size siz, int row, int column){
 
 
 void affichagePlateau(board game){
-   afficheVide();
-
+    afficheVide();
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
             if (get_piece_size(game, i, j) != NONE)
@@ -172,12 +172,12 @@ void drawCursor(board game, int x, int y){
               
     for (int i = 1; i < width-1; i++){                      //Côté gauche
         movePrintCursor((coord){posx + i, posy-1});
-        printf("█");
+        printf("██");
     }
 
     for (int i = 1; i < width-1; i++){                      //Côté droit
-        movePrintCursor((coord){posx + i, posy + width*2 - 1});
-        printf("█");
+        movePrintCursor((coord){posx + i, posy + width*2 - 2});
+        printf("██");
     }
 
     movePrintCursor((coord){1, 1});
@@ -187,13 +187,13 @@ void affichageInventory(board game, player x){
     for (int i=1; i<=3; i++){
         switch(i){
             case 1:
-                printf("Nombre de petites pièces : ");
+                printf("Petites pièces : ");
             break;
             case 2:
-                printf("Nombre de pièces moyennes : ");
+                printf("Pièces moyennes : ");
             break;
             case 3:
-                printf("Nombre de grandes pièces : ");
+                printf("Grandes pièces : ");
             break;
         }
         for (int j=0; j<get_nb_piece_in_house(game, x, i); j++){
