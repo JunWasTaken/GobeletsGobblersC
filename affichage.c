@@ -14,7 +14,7 @@
 
 #define GRID_SIZE 25            //Multiple de 6 + 1
 #define STARTX 5
-#define STARTY 50
+#define STARTY 40
 
 
 void movePrintCursor(coord pos){
@@ -150,6 +150,20 @@ void affichagePlateau(board game){
     }
 }
 
+
+void printPlayer(player pl){
+	char* color;
+
+	if (pl == PLAYER_1)
+		color = BLEU;
+	else 
+		color = ROUGE;
+
+	movePrintCursor((coord){STARTX + GRID_SIZE, STARTY + GRID_SIZE - 5});		//Retour en dessous du plateau
+    printf("%sJoueur %d%s", color, pl, BLANC);
+}
+
+
 void drawCursor(board game, int x, int y){
     affichagePlateau(game);
     int width = (GRID_SIZE-4)/3;
@@ -180,33 +194,52 @@ void drawCursor(board game, int x, int y){
         printf("██");
     }
 
-    movePrintCursor((coord){1, 1});
+    movePrintCursor((coord){STARTX + GRID_SIZE + 2, STARTY});		//Retour en dessous du plateau
+    printf(BLANC);
 }
 
-void affichageInventory(board game, player x){
-    for (int i=1; i<=3; i++){
-        switch(i){
-            case 1:
-                printf("Petites pièces : ");
-            break;
-            case 2:
-                printf("Pièces moyennes : ");
-            break;
-            case 3:
-                printf("Grandes pièces : ");
-            break;
-        }
-        for (int j=0; j<get_nb_piece_in_house(game, x, i); j++){
-            char* color;
-            if (x==1)
-                color=BLEU;
-            else{
-                color=ROUGE;
-            }
-            printf("%s%s", color, "* ");
-        }
-        printf(BLANC);
-        printf("\n");
-    }
-    printf("\n");
+void affichageInventory(board game){
+    coord pos;
+	char* color;
+	for (int x = 1; x <= 2; x++){
+		pos.x = STARTX + GRID_SIZE/3;
+		pos.y = STARTY/2 - 12 ;
+
+		if (x == 1)
+			color = BLEU;
+		else{
+			color = ROUGE;
+			pos.y += STARTY + GRID_SIZE*2;
+		}
+
+		movePrintCursor(pos);
+		
+		printf("    %sJoueur %d%s", color, x, BLANC);
+		pos.x += 2;
+		movePrintCursor(pos);
+		for (int i=1; i<=3; i++){
+			switch(i){
+				case 1:
+					printf("Petites pièces : ");
+				break;
+				case 2:
+					printf("Pièces moyennes : ");
+				break;
+				case 3:
+					printf("Grandes pièces : ");
+				break;
+			}
+
+
+			printf("%s", color);
+			for (int j=0; j < get_nb_piece_in_house(game, x, i); j++){
+				printf("%s", "* ");
+			}
+			printf(BLANC);
+			pos.x++;
+			movePrintCursor(pos);
+		}
+		pos.x++;
+		movePrintCursor(pos);
+	}
 }

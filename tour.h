@@ -24,7 +24,7 @@ int choiceSelector(int x);
  * 
  * @param x -> Le joueur 1, celui qui sera appelé en premier par la fonction
  * @param y -> le second joueur, il sera utilisé lors du changement de joueur
- * @param game -> le plateur du jeu
+ * @param game -> le plateau du jeu
  */
 void Partie(player x, player y, board game);
 

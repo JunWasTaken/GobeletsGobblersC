@@ -14,7 +14,6 @@ int choiceSelector(int x){
     int returnValue=0;
     
     do{
-        printf("Votre Choix : ");
         scanf("%d", &choix);
         if (choix >= 1 && choix <= x){
             returnValue = choix;
@@ -56,6 +55,7 @@ board placementPion(board game, player x){
     int column=0, row=0;
     unsigned int pieceSize=0;
 
+    printPlayer(x);
     drawCursor(game, 0, 0);
 
     static struct termios oldt;
@@ -96,7 +96,7 @@ board placementPion(board game, player x){
 
     resetInputMode(&oldt);
 
-    printf("Quelle taille de pièce ? Petite (1), Moyenne (2) ou Grande (3)\n -> ");
+    printf("Quelle taille de pièce ? Petite (1), Moyenne (2) ou Grande (3) : ");
     pieceSize=choiceSelector(3);
     while(!get_nb_piece_in_house(game, x, pieceSize)){
         printf("Veuillez faire un choix valide\n");
@@ -108,9 +108,6 @@ board placementPion(board game, player x){
         
     int res = place_piece(game, x, pieceSize, cursor.y, cursor.x);
     switch (res){
-        case 0:
-            printf("Piece placée avec succès\n");
-            break;
         case 1:
             printf("Pas assez de pièces de cette taille dans la maison\n");
             break;
@@ -132,7 +129,7 @@ board placementPion(board game, player x){
  * Elle appelle la fonction move_piece de board.h et affiche un commentaire correspondant au résultat de cette dernière
  * 
  * @param game -> le plateau que nous allons utiliser pour déplacer les pièces 
- * @param x -> le joueur dont c'est le tour, il est utilisé pour voir si la pièce à la case choisie lui appartient bien
+ * @param pl -> le joueur dont c'est le tour, il est utilisé pour voir si la pièce à la case choisie lui appartient bien
  * 
  * @return le plateau modifié
  */
@@ -185,21 +182,9 @@ void TourJeu(player x, board game){
 
     printf("\033[2J");                               //ANSI code : efface l'écran
     affichagePlateau(game);
-    printf("C'est au tour du joueur %d de jouer ;)\n", x);
-    affichageInventory(game, x);
+    affichageInventory(game);
 
     game = placementPion(game, x);
-    /*printf("Que voulez-vous faire ?\n1-Placer un pion\n2-Déplacer un pion\n");
-    choix = choiceSelector(2);
-        
-    switch (choix){
-        case 1:
-            game = placementPion(game, x);
-        break;
-        case 2:
-            game = deplacementPion(game, x);
-        break;
-    }*/
 }
 
 void Partie(player x, player y, board game){
