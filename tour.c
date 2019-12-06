@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "board.h"
 #include "affichage.h"
+#include "directInput.h"
 
 typedef struct{
     int x;
@@ -51,21 +52,61 @@ void saisieCoord(coord* casePlateau){
  * @return le plateau modifié
  */ 
 board placementPion(board game, player x){ 
-    coord caseDestination;
-    coord* pcd = &caseDestination;
+    coord cursor = {0, 0};
     int column=0, row=0;
     unsigned int pieceSize=0;
-    printf("Quelle taille de pièce voulez-vous jouer ? Petite, Moyenne ou Grande\n(Faire un choix entre 1 et 3) -> ");
+
+    drawCursor(game, 0, 0);
+
+    static struct termios oldt;
+    char c;
+    getchar();
+    initInputMode(&oldt);
+
+    while((c=getchar()) != '\n'){
+        if (c == '\033'){           //Si c'est un escape code
+            getchar();              //Enlève le [
+            switch(getchar()){      //Le vrai code
+                case 'A':
+                    if (cursor.y > 0){
+                        cursor.y--;
+                        drawCursor(game, cursor.y, cursor.x);
+                    }
+                    break;
+                case 'B':
+                    if (cursor.y < 2){
+                        cursor.y++;
+                        drawCursor(game, cursor.y, cursor.x);
+                    }
+                    break;
+                case 'C':
+                    if (cursor.x < 2){
+                        cursor.x++;
+                        drawCursor(game, cursor.y, cursor.x);
+                    }
+                    break;
+                case 'D':
+                    if (cursor.x > 0){
+                        cursor.x--;
+                        drawCursor(game, cursor.y, cursor.x);
+                    }
+            }
+        }
+    }
+
+    resetInputMode(&oldt);
+
+    printf("Quelle taille de pièce ? Petite (1), Moyenne (2) ou Grande (3)\n -> ");
     pieceSize=choiceSelector(3);
     while(!get_nb_piece_in_house(game, x, pieceSize)){
         printf("Veuillez faire un choix valide\n");
         pieceSize=choiceSelector(3);
     }
 
-    printf("Saisir la case de destination\n");
-    saisieCoord(pcd);
+    /*printf("Saisir la case de destination\n");
+    saisieCoord(pcd);*/
         
-    int res = place_piece(game, x, pieceSize, (caseDestination.x-1), (caseDestination.y-1));
+    int res = place_piece(game, x, pieceSize, cursor.y, cursor.x);
     switch (res){
         case 0:
             printf("Piece placée avec succès\n");
@@ -142,10 +183,13 @@ void TourJeu(player x, board game){
     int choix = 0, column, row;
     unsigned int pieceSize=0; 
 
+    printf("\033[2J");                               //ANSI code : efface l'écran
     affichagePlateau(game);
     printf("C'est au tour du joueur %d de jouer ;)\n", x);
     affichageInventory(game, x);
-    printf("Que voulez-vous faire ?\n1-Placer un pion\n2-Déplacer un pion\n");
+
+    game = placementPion(game, x);
+    /*printf("Que voulez-vous faire ?\n1-Placer un pion\n2-Déplacer un pion\n");
     choix = choiceSelector(2);
         
     switch (choix){
@@ -155,7 +199,7 @@ void TourJeu(player x, board game){
         case 2:
             game = deplacementPion(game, x);
         break;
-    }
+    }*/
 }
 
 void Partie(player x, player y, board game){

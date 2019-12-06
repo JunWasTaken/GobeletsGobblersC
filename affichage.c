@@ -25,7 +25,6 @@ void afficheVide(){
     int n = GRID_SIZE;
     int a = 0, b = n/3, c = (2*n)/3, d = n-1;       //Début, 1/3, 2/3, fin : tracé des lignes
 
-    printf(CLEARSCR);                               //ANSI code : efface l'écran
     coord printPos = {STARTX, STARTY};
     movePrintCursor(printPos);                      //Déplacement du curseur (coin sup gauche)
 
@@ -149,6 +148,39 @@ void affichagePlateau(board game){
                 drawPiece(get_place_holder(game, i, j), get_piece_size(game, i, j), i, j);
         }
     }
+}
+
+void drawCursor(board game, int x, int y){
+    affichagePlateau(game);
+    int width = (GRID_SIZE-4)/3;
+
+    int posx = 1 + STARTX + (x * GRID_SIZE)/3;
+    int posy = 2 + STARTY + (y * GRID_SIZE * 2)/3;
+
+    if (y == 2)
+        posy--;
+
+    movePrintCursor((coord){posx, posy-1});                 //Côté haut
+    for (int i = 0; i < width*2 + 1; i++){
+        printf("█");
+    }
+
+    movePrintCursor((coord){posx + width-1, posy-1});       //Côté bas
+    for (int i = 0; i < width*2 + 1; i++){
+        printf("█");
+    }
+              
+    for (int i = 1; i < width-1; i++){                      //Côté gauche
+        movePrintCursor((coord){posx + i, posy-1});
+        printf("█");
+    }
+
+    for (int i = 1; i < width-1; i++){                      //Côté droit
+        movePrintCursor((coord){posx + i, posy + width*2 - 1});
+        printf("█");
+    }
+
+    movePrintCursor((coord){1, 1});
 }
 
 void affichageInventory(board game, player x){

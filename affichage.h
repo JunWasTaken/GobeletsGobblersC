@@ -6,5 +6,6 @@
 void afficheVide();
 void affichagePlateau(board game);
 void affichageInventory(board game, player x);
+void drawCursor(board game, int x, int y);
 
 #endif
