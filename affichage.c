@@ -13,7 +13,7 @@
 #define CLEARSCR "\033[2J"
 
 #define GRID_SIZE 25            //Multiple de 6 + 1
-#define STARTX 5
+#define STARTX 3
 #define STARTY 40
 
 
@@ -161,6 +161,25 @@ void printPlayer(player pl){
 
 	movePrintCursor((coord){STARTX + GRID_SIZE, STARTY + GRID_SIZE - 5});		//Retour en dessous du plateau
     printf("%sJoueur %d%s", color, pl, BLANC);
+}
+
+void moveCursorUnder(int n){
+	movePrintCursor((coord){STARTX + GRID_SIZE + n, STARTY});
+}
+
+
+void printWinner(board game, player pl){
+	char* color;
+
+	if (pl == PLAYER_1)
+		color = BLEU;
+	else 
+		color = ROUGE;
+
+	printf(CLEARSCR);
+	affichagePlateau(game);
+	movePrintCursor((coord){STARTX + GRID_SIZE + 2, STARTY});
+    printf("    Partie terminée, le %sJoueur %d%s a gagné !\n\n", color, pl, BLANC);
 }
 
 
