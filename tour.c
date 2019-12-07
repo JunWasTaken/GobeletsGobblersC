@@ -29,18 +29,6 @@ int choiceSelector(int x){
 }
 
 /**
- * @brief Saisie les coordonnées d'une case manuellement
- * 
- * @param casePlateau -> la case du plateau à saisir les coordonnées
- */ 
-void saisieCoord(coord* casePlateau){
-    printf("Saisissez la ligne -> ");
-    casePlateau->x = choiceSelector(3);
-    printf("Saisissez la colonne -> ");
-    casePlateau->y = choiceSelector(3);
-}
-
-/**
  * @brief fonction gérant le déplacement des pions
  * 
  * La fonction demande d'abord à l'utilisateur de saisir les coordonnées de la case à prendre le pion,
