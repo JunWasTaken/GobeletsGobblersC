@@ -53,36 +53,47 @@ board deplacementPion(board game, player pl, int y, int x){
     
     initInputMode(&oldt);
 
-    while((c=getchar()) != '\n'){
-        if (c == '\033'){           //Si c'est un escape code
-            getchar();              //Enlève le [
-            switch(getchar()){      //Le vrai code
-                case 'A':
-                    if (cursor.y > 0){
-                        cursor.y--;
-                        drawCursor(game, cursor.y, cursor.x);
-                    }
-                    break;
-                case 'B':
-                    if (cursor.y < 2){
-                        cursor.y++;
-                        drawCursor(game, cursor.y, cursor.x);
-                    }
-                    break;
-                case 'C':
-                    if (cursor.x < 2){
-                        cursor.x++;
-                        drawCursor(game, cursor.y, cursor.x);
-                    }
-                    break;
-                case 'D':
-                    if (cursor.x > 0){
-                        cursor.x--;
-                        drawCursor(game, cursor.y, cursor.x);
-                    }
+    do{
+        while((c=getchar()) != '\n'){
+            if (c == '\033'){           //Si c'est un escape code
+                getchar();              //Enlève le [
+                switch(getchar()){      //Le vrai code
+                    case 'A':
+                        if (cursor.y > 0){
+                            cursor.y--;
+                            drawCursor(game, cursor.y, cursor.x);
+                        }
+                        break;
+                    case 'B':
+                        if (cursor.y < 2){
+                            cursor.y++;
+                            drawCursor(game, cursor.y, cursor.x);
+                        }
+                        break;
+                    case 'C':
+                        if (cursor.x < 2){
+                            cursor.x++;
+                            drawCursor(game, cursor.y, cursor.x);
+                        }
+                        break;
+                    case 'D':
+                        if (cursor.x > 0){
+                            cursor.x--;
+                            drawCursor(game, cursor.y, cursor.x);
+                        }
+                }
             }
         }
-    }
+
+        if (x == cursor.x && y == cursor.y){
+            moveCursorUnder(2);
+            printf("Veuillez choisir une autre case                             ");
+        }
+        else if (get_piece_size(game, cursor.y, cursor.x) >= get_piece_size(game, y, x)){
+            moveCursorUnder(2);
+            printf("Cette pièce est trop grosse                                  ");
+        }
+    } while((x == cursor.x && y == cursor.y) || (get_piece_size(game, cursor.y, cursor.x) >= get_piece_size(game, y, x)));
 
     resetInputMode(&oldt);
 
@@ -130,38 +141,65 @@ board placementPion(board game, player x){
     
     initInputMode(&oldt);
 
-    while((c=getchar()) != '\n'){
-        if (c == '\033'){           //Si c'est un escape code
-            getchar();              //Enlève le [
-            switch(getchar()){      //Le vrai code
-                case 'A':
-                    if (cursor.y > 0){
-                        cursor.y--;
-                        drawCursor(game, cursor.y, cursor.x);
-                    }
-                    break;
-                case 'B':
-                    if (cursor.y < 2){
-                        cursor.y++;
-                        drawCursor(game, cursor.y, cursor.x);
-                    }
-                    break;
-                case 'C':
-                    if (cursor.x < 2){
-                        cursor.x++;
-                        drawCursor(game, cursor.y, cursor.x);
-                    }
-                    break;
-                case 'D':
-                    if (cursor.x > 0){
-                        cursor.x--;
-                        drawCursor(game, cursor.y, cursor.x);
-                    }
+    int pSize, possible = 1, otherColor;
+    do {
+        while((c=getchar()) != '\n'){
+            if (c == '\033'){           //Si c'est un escape code
+                getchar();              //Enlève le [
+                switch(getchar()){      //Le vrai code
+                    case 'A':
+                        if (cursor.y > 0){
+                            cursor.y--;
+                            drawCursor(game, cursor.y, cursor.x);
+                        }
+                        break;
+                    case 'B':
+                        if (cursor.y < 2){
+                            cursor.y++;
+                            drawCursor(game, cursor.y, cursor.x);
+                        }
+                        break;
+                    case 'C':
+                        if (cursor.x < 2){
+                            cursor.x++;
+                            drawCursor(game, cursor.y, cursor.x);
+                        }
+                        break;
+                    case 'D':
+                        if (cursor.x > 0){
+                            cursor.x--;
+                            drawCursor(game, cursor.y, cursor.x);
+                        }
+                }
             }
         }
-    }
 
-    if (get_place_holder(game, cursor.y, cursor.x) != x){      //Placement nouvelle pièce
+        otherColor = (get_place_holder(game, cursor.y, cursor.x) != x);
+        if (otherColor){
+            pSize = get_piece_size(game, cursor.y, cursor.x);
+            if (pSize == 3){
+                possible = 0;
+            }
+            else {
+                possible = 0;
+                for (int i = pSize+1; i <= 3; i++){
+                    if (get_nb_piece_in_house(game, x, i) > 0)
+                        possible = 1;
+                }
+            }
+
+            if (!possible){
+                moveCursorUnder(2);
+                printf("Vous ne pouvez rien placer sur cette pièce                ");
+            }
+        }
+        else{
+            possible = 1;
+        }
+
+    } while (!possible);
+
+    if (otherColor){      //Placement nouvelle pièce
 
         printf("Quelle taille de pièce ? Petite (1), Moyenne (2) ou Grande (3) : ");
         
@@ -171,10 +209,16 @@ board placementPion(board game, player x){
             } while (pieceSize != '1' && pieceSize != '2' && pieceSize != '3');
             pieceSize -= '0';
             
-            if (!get_nb_piece_in_house(game, x, pieceSize))
-                moveCursorUnder(3);
-                printf("Vous n'avez plus de pièces de cette taille");
-        } while(!get_nb_piece_in_house(game, x, pieceSize));
+            if (pieceSize <= pSize){
+                moveCursorUnder(2);
+                printf("Choisissez une pièce plus grande                             ");
+            }
+            else if (!get_nb_piece_in_house(game, x, pieceSize)){
+                moveCursorUnder(2);
+                printf("Vous n'avez plus de pièces de cette taille                   ");
+            }
+            
+        } while(!get_nb_piece_in_house(game, x, pieceSize) || pieceSize <= pSize);
         resetInputMode(&oldt);
             
         int res = place_piece(game, x, pieceSize, cursor.y, cursor.x);

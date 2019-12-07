@@ -3,6 +3,11 @@
 
 #include "board.h"
 
+#define BLEU "\033[38;5;39m"
+#define ROUGE "\033[38;5;160m"
+#define BLANC "\033[37m"
+#define CLEARSCR "\033[2J"
+
 typedef struct{
 	int x; 
 	int y;
