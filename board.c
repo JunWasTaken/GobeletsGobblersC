@@ -26,9 +26,13 @@ typedef struct cases_s* cases;
  * @brief The board of the game, define it as you wish.
  */
 struct board_s{
-	// TODO: compléter la structure.
 	cases plateau[DIMENSIONS][DIMENSIONS];
 };
+
+typedef struct{
+	player joueur;
+	int nbPieces[3];
+}house;
 
 board new_game(){ 
 	// memory allocation for the board (leave it as is)
