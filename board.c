@@ -54,6 +54,19 @@ board new_game(){
 	return new_board;
 }
 
+player get_place_holder(board game, int line, int column){
+	
+}
+
+int get_nb_piece_in_house(board game, player checked_player, size piece_size){
+	int nbPieces=0;
+	if (checked_player != game->house[0].joueur || checked_player != game->house[1].joueur){
+		printf ("Le joueur saisi est invalide");
+	}else
+		nbPieces = game->house[checked_player].nbPieces[piece_size-1];
+	return nbPieces;
+}
+
 void destroy_game(board game){
 	// freeing memory, necessary for memory allocated with malloc (leave as is)
 	free(game);
