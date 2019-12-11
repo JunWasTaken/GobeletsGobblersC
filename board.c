@@ -8,9 +8,17 @@
  * \author You?
  */
 
-struct cases_s{
-	player content[3]; //Tableau de joueurs à 3 cases : case 0 -> petite pièce, case 1 -> pièce moyenne, case 2 -> grande pièce 
-};
+
+/**
+ * @brief structure case pour le plateau
+ * 
+ * @brief content est un tableau de taille DIMENSIONS, chaque case de ce tableau correspond à une taille de pièce. 
+ * On stocke dans ces case de tableau les numéros des joueurs à qui la case appartient.
+ * exemple : J1 place une pièce moyenne; content[1] contient donc J1
+ */
+typedef struct{
+	player content[DIMENSIONS];
+}case_s;
 
 typedef struct cases_s* cases;
 
