@@ -12,14 +12,21 @@
  * @brief The board of the game, define it as you wish.
  */
 
+/**
+ * @brief structure case pour le plateau
+ * 
+ * @brief content est un tableau de taille DIMENSIONS, chaque case de ce tableau correspond à une taille de pièce. 
+ * On stocke dans ces case de tableau les numéros des joueurs à qui la case appartient.
+ * exemple : J1 place une pièce moyenne; content[1] contient donc J1
+ */
 typedef struct{
-	player content[DIMENSIONS]; //Tableau de joueur à 3 cases : case 0 -> petite pièce, case 1 -> pièce moyenne, case 2 -> grande pièce 
-}cases_s;
+	player content[DIMENSIONS];
+}case_s;
 
-typedef struct {
+struct board_s{
 	// TODO: compléter la structure.
 	
-}board_s;
+};
 
 board new_game(){ 
 	// memory allocation for the board (leave it as is)
