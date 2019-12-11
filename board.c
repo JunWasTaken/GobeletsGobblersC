@@ -60,11 +60,25 @@ size get_piece_size(board game, int row, int column){
 	for (int i = 0; i < 3; i++){
 		if (c->content[i] != NO_PLAYER){
 			if (i > sMax)
-				sMax = i;
+				sMax = i+1;
 		}
 	}
 
 	return sMax;
+}
+
+player get_place_holder(board game, int row, int column){
+	case_s *c = game->plateau[row, column];
+	return c->content[get_piece_size(game, row, column)-1];
+}
+
+int get_nb_piece_in_house(board game, player checked_player, size piece_size){
+	int nbPieces=0;
+	if (checked_player != game->house[0].joueur || checked_player != game->house[1].joueur){
+		printf ("Le joueur saisi est invalide");
+	}else
+		nbPieces = game->house[checked_player].nbPieces[piece_size-1];
+	return nbPieces;
 }
 
 void destroy_game(board game){
