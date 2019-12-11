@@ -30,6 +30,11 @@ struct board_s{
 	
 };
 
+typedef struct{
+	player joueur;
+	int nbPieces[3];
+}house;
+
 board new_game(){ 
 	// memory allocation for the board (leave it as is)
 	board new_board = malloc(sizeof(struct board_s));
