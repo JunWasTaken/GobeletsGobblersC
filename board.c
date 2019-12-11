@@ -20,24 +20,37 @@ typedef struct{
 	player content[DIMENSIONS];
 }case_s;
 
-typedef struct cases_s* cases;
-
-/**
- * @brief The board of the game, define it as you wish.
- */
-struct board_s{
-	cases plateau[DIMENSIONS][DIMENSIONS];
-};
-
 typedef struct{
 	player joueur;
 	int nbPieces[3];
 }house;
 
+/**
+ * @brief The board of the game, define it as you wish.
+ */
+struct board_s{
+	case_s plateau[DIMENSIONS][DIMENSIONS];
+	house house[2];
+};
+
+
+
 board new_game(){ 
 	// memory allocation for the board (leave it as is)
 	board new_board = malloc(sizeof(struct board_s));
-	// TODO: Insérer les traitements que vous voudriez faire.
+	for (int i=0; i<DIMENSIONS; i++){ //parcours des lignes
+		for (int j=0; j<DIMENSIONS; j++){ //parcours des colonnes
+			for (int k=0; k<DIMENSIONS; k++){ //parcours du contenu de la case en {i;j}
+				new_board->plateau[i][j].content[k]=0; //initialise le contenu de la case à 0 pour les pièces petites, moyennes et grandes
+			}
+		}
+	}
+	for (int j=0; j<2; j++){
+		new_board->house[j].joueur = PLAYER_1+j;
+		for (int i=0; i<3; i++){
+			new_board->house[j].nbPieces[i]=2;
+		}
+	}
 	return new_board;
 }
 
