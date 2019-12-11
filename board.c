@@ -33,11 +33,23 @@ struct board_s{
 	house house[2];
 };
 
+
+
 board new_game(){ 
 	board new_board = malloc(sizeof(struct board_s));
-
-	// TODO: Insérer les traitements que vous voudriez faire.
-	
+	for (int i=0; i<DIMENSIONS; i++){ //parcours des lignes
+		for (int j=0; j<DIMENSIONS; j++){ //parcours des colonnes
+			for (int k=0; k<DIMENSIONS; k++){ //parcours du contenu de la case en {i;j}
+				new_board->plateau[i][j].content[k]=0; //initialise le contenu de la case à 0 pour les pièces petites, moyennes et grandes
+			}
+		}
+	}
+	for (int j=0; j<2; j++){
+		new_board->house[j].joueur = PLAYER_1+j;
+		for (int i=0; i<3; i++){
+			new_board->house[j].nbPieces[i]=2;
+		}
+	}
 	return new_board;
 }
 
