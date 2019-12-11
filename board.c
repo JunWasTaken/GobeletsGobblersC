@@ -8,18 +8,19 @@
  * \author You?
  */
 
+struct cases_s{
+	player content[3]; //Tableau de joueurs à 3 cases : case 0 -> petite pièce, case 1 -> pièce moyenne, case 2 -> grande pièce 
+};
+
+typedef struct cases_s* cases;
+
 /**
  * @brief The board of the game, define it as you wish.
  */
-
-typedef struct{
-	player content[DIMENSIONS]; //Tableau de joueur à 3 cases : case 0 -> petite pièce, case 1 -> pièce moyenne, case 2 -> grande pièce 
-}cases_s;
-
-typedef struct {
+struct board_s{
 	// TODO: compléter la structure.
-	
-}board_s;
+	cases plateau[DIMENSIONS][DIMENSIONS];
+};
 
 board new_game(){ 
 	// memory allocation for the board (leave it as is)
