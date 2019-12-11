@@ -11,10 +11,15 @@
 /**
  * @brief The board of the game, define it as you wish.
  */
-struct board_s {
+
+typedef struct{
+	player content[DIMENSIONS]; //Tableau de joueur à 3 cases : case 0 -> petite pièce, case 1 -> pièce moyenne, case 2 -> grande pièce 
+}cases_s;
+
+typedef struct {
 	// TODO: compléter la structure.
 	
-};
+}board_s;
 
 board new_game(){ 
 	// memory allocation for the board (leave it as is)

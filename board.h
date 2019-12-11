@@ -2,7 +2,6 @@
 #define _BOARD_H_
 
 #include <stdbool.h>
-
 /**
  * \file board.h
  *
