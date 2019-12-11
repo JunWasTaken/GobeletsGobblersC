@@ -53,6 +53,20 @@ board new_game(){
 	return new_board;
 }
 
+size get_piece_size(board game, int row, int column){
+	size sMax = NONE;
+	case_s *c = game->plateau[row, column];
+
+	for (int i = 0; i < 3; i++){
+		if (c->content[i] != NO_PLAYER){
+			if (i > sMax)
+				sMax = i;
+		}
+	}
+
+	return sMax;
+}
+
 void destroy_game(board game){
 	// freeing memory, necessary for memory allocated with malloc (leave as is)
 	free(game);
