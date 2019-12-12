@@ -18,7 +18,7 @@
  */
 typedef struct{
 	player content[DIMENSIONS];
-}case_s;
+} case_s;
 
 typedef struct{
 	player joueur;
@@ -36,7 +36,6 @@ struct board_s{
 
 
 board new_game(){ 
-	// memory allocation for the board (leave it as is)
 	board new_board = malloc(sizeof(struct board_s));
 	for (int i=0; i<DIMENSIONS; i++){ //parcours des lignes
 		for (int j=0; j<DIMENSIONS; j++){ //parcours des colonnes
@@ -54,8 +53,23 @@ board new_game(){
 	return new_board;
 }
 
-player get_place_holder(board game, int line, int column){
-	
+size get_piece_size(board game, int row, int column){
+	size sMax = NONE;
+	case_s *c = game->plateau[row, column];
+
+	for (int i = 0; i < 3; i++){
+		if (c->content[i] != NO_PLAYER){
+			if (i > sMax)
+				sMax = i+1;
+		}
+	}
+
+	return sMax;
+}
+
+player get_place_holder(board game, int row, int column){
+	case_s *c = game->plateau[row, column];
+	return c->content[get_piece_size(game, row, column)-1];
 }
 
 int get_nb_piece_in_house(board game, player checked_player, size piece_size){
