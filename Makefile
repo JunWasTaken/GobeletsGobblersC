@@ -1,2 +1,21 @@
-gobblers: main.c affichage.c directInput.c board.o
-	gcc tour.c main.c affichage.c directInput.c board.o -lm -o gobblers
+CC=gcc
+CFLAGS=-Wall
+
+SOURCES=$(wildcard *.c)
+OBJECTS=$(SOURCES:.c=.o)
+EXECUTABLE=ex1
+
+all: $(EXECUTABLE)
+	./$(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm $(EXECUTABLE) $(OBJECTS)
+
+files:
+	$(shell echo $(SOURCES))
