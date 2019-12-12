@@ -8,7 +8,6 @@
  * \author You?
  */
 
-
 /**
  * @brief structure case pour le plateau
  * 
@@ -32,8 +31,6 @@ struct board_s{
 	case_s plateau[DIMENSIONS][DIMENSIONS];
 	house house[2];
 };
-
-
 
 board new_game(){ 
 	board new_board = malloc(sizeof(struct board_s));
@@ -63,7 +60,6 @@ size get_piece_size(board game, int row, int column){
 				sMax = i+1;
 		}
 	}
-
 	return sMax;
 }
 
@@ -79,6 +75,38 @@ int get_nb_piece_in_house(board game, player checked_player, size piece_size){
 	}else
 		nbPieces = game->house[checked_player].nbPieces[piece_size-1];
 	return nbPieces;
+}
+
+int place_piece(board game, player current_player, size piece_size, int line, int column){
+	int returnValue; 
+	if (!(get_nb_piece_in_house(game, current_player, piece_size)))
+		returnValue = 1;
+	else if (get_piece_size(game, line, column) >= piece_size)
+		returnValue = 2;
+	else if (line >= 3 || column >= 3)
+		returnValue = 3;
+	else
+	{
+		game->plateau[line][column].content[piece_size-1] = current_player;
+		returnValue = 0;
+	}
+	return returnValue;
+}
+
+int move_piece(board game, int source_line, int source_column, int target_line, int target_column){
+	int returnValue;
+	if (!(get_piece_size(game, source_line, source_column)))
+		returnValue = 1;
+	else if (get_piece_size(game, target_line, target_column)>=get_piece_size(game, source_line, source_column))
+		returnValue = 2;
+	else if (source_line >=3 || source_column >= 3 || target_line >= 3 || target_column >=3)
+		returnValue = 3;
+	else
+	{
+		game->plateau[target_line][target_column].content[get_piece_size(game, source_line, source_column)-1] = game->plateau[source_line][source_column].content[get_piece_size(game, source_line, source_column)-1];
+		game->plateau[target_line][target_column].content[get_piece_size(game, source_line, source_column)-1] = 0;
+	}
+	
 }
 
 void destroy_game(board game){
