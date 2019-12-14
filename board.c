@@ -34,17 +34,17 @@ struct board_s{
 
 board new_game(){ 
 	board new_board = malloc(sizeof(struct board_s));
-	for (int i=0; i<DIMENSIONS; i++){ //parcours des lignes
-		for (int j=0; j<DIMENSIONS; j++){ //parcours des colonnes
-			for (int k=0; k<DIMENSIONS; k++){ //parcours du contenu de la case en {i;j}
-				new_board->plateau[i][j].content[k]=0; //initialise le contenu de la case à 0 pour les pièces petites, moyennes et grandes
+	for (int i=0; i<DIMENSIONS; i++){ 					//parcours des lignes
+		for (int j=0; j<DIMENSIONS; j++){ 				//parcours des colonnes
+			for (int k=0; k<DIMENSIONS; k++){ 			//parcours du contenu de la case en {i;j}
+				new_board->plateau[i][j].content[k]=0; 	//initialise le contenu de la case à 0 pour les pièces petites, moyennes et grandes
 			}
 		}
 	}
 	for (int j=0; j<2; j++){
 		new_board->house[j].joueur = PLAYER_1+j;
 		for (int i=0; i<3; i++){
-			new_board->house[j].nbPieces[i]=2;
+			new_board->house[j].nbPieces[i] = 2;
 		}
 	}
 	return new_board;
@@ -79,6 +79,7 @@ int get_nb_piece_in_house(board game, player checked_player, size piece_size){
 
 int place_piece(board game, player current_player, size piece_size, int line, int column){
 	int returnValue; 
+
 	if (!(get_nb_piece_in_house(game, current_player, piece_size)))
 		returnValue = 1;
 	else if (get_piece_size(game, line, column) >= piece_size)
@@ -90,23 +91,51 @@ int place_piece(board game, player current_player, size piece_size, int line, in
 		game->plateau[line][column].content[piece_size-1] = current_player;
 		returnValue = 0;
 	}
+
 	return returnValue;
 }
 
 int move_piece(board game, int source_line, int source_column, int target_line, int target_column){
 	int returnValue;
-	if (!(get_piece_size(game, source_line, source_column)))
+	size sourceSize = get_piece_size(game, source_line, source_column);
+	if (!sourceSize)
 		returnValue = 1;
-	else if (get_piece_size(game, target_line, target_column)>=get_piece_size(game, source_line, source_column))
+	else if (get_piece_size(game, target_line, target_column)>=sourceSize)
 		returnValue = 2;
 	else if (source_line >=3 || source_column >= 3 || target_line >= 3 || target_column >=3)
 		returnValue = 3;
 	else
 	{
-		game->plateau[target_line][target_column].content[get_piece_size(game, source_line, source_column)-1] = game->plateau[source_line][source_column].content[get_piece_size(game, source_line, source_column)-1];
-		game->plateau[target_line][target_column].content[get_piece_size(game, source_line, source_column)-1] = 0;
+		game->plateau[target_line][target_column].content[sourceSize-1] = game->plateau[source_line][source_column].content[sourceSize-1];
+		game->plateau[source_line][source_column].content[sourceSize-1] = NO_PLAYER;
+		returnValue = 0;
 	}
 	
+}
+
+player get_winner(board game){
+	player winner = NO_PLAYER;
+	int i = 0;
+
+	for (int i = 0; i < 3; i++){		
+		if (get_place_holder(game, i, 0) == get_place_holder(game, i, 1) == get_place_holder(game, i, 2))	//vérification des lignes
+			if (winner != NO_PLAYER && winner != get_place_holder(game, i, 0))	//si il y a déjà un gagnant et que c'est pas le même
+				winner = NO_PLAYER;						//égalité : pas encore de gagnant
+			else
+				winner = get_place_holder(game, i, 0);	//le joueur qui a la ligne gagne
+		
+		if (get_place_holder(game, 0, i) == get_place_holder(game, 1, i) == get_place_holder(game, 2, i))	//vérification des colonnes
+			if (winner != NO_PLAYER && winner != get_place_holder(game, 0, i))
+				winner = NO_PLAYER;						
+			else
+				winner = get_place_holder(game, 0, i);	//le joueur qui a la colonne gagne
+	}
+
+	return winner;
+}
+
+player next_player(player current_player){
+	return -current_player + 3;			//inverse 1 et 2
 }
 
 void destroy_game(board game){
