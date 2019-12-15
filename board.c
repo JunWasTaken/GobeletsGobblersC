@@ -106,11 +106,11 @@ int move_piece(board game, int source_line, int source_column, int target_line, 
 		returnValue = 3;
 	else
 	{
-		game->plateau[target_line][target_column].content[sourceSize-1] = game->plateau[source_line][source_column].content[sourceSize-1];
-		game->plateau[source_line][source_column].content[sourceSize-1] = NO_PLAYER;
+		game->plateau[target_line][target_column].content[get_piece_size(game, source_line, source_column)-1] = game->plateau[source_line][source_column].content[get_piece_size(game, source_line, source_column)-1];
+		game->plateau[target_line][target_column].content[get_piece_size(game, source_line, source_column)-1] = 0;
 		returnValue = 0;
 	}
-	
+	return returnValue;
 }
 
 player get_winner(board game){
