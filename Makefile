@@ -9,7 +9,7 @@ all: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE) -lm
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
