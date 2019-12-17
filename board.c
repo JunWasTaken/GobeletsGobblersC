@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "board.h"
 
 /**
@@ -53,7 +54,7 @@ board new_game(){
 
 size get_piece_size(board game, int row, int column){
 	size sMax = NONE;
-	case_s *c = game->plateau[row, column];
+	case_s *c = &game->plateau[row][column];
 
 	for (int i = 0; i < 3; i++){
 		if (c->content[i] != NO_PLAYER){
@@ -65,7 +66,7 @@ size get_piece_size(board game, int row, int column){
 }
 
 player get_place_holder(board game, int row, int column){
-	case_s *c = game->plateau[row, column];
+	case_s *c = &game->plateau[row][column];
 	return c->content[get_piece_size(game, row, column)-1];
 }
 
@@ -116,20 +117,21 @@ int move_piece(board game, int source_line, int source_column, int target_line, 
 
 player get_winner(board game){
 	player winner = NO_PLAYER;
-	int i = 0;
 
 	for (int i = 0; i < 3; i++){		
-		if (get_place_holder(game, i, 0) == get_place_holder(game, i, 1) == get_place_holder(game, i, 2))	//vérification des lignes
+		if ((get_place_holder(game, i, 0) == get_place_holder(game, i, 1)) && (get_place_holder(game, i, 1) == get_place_holder(game, i, 2))){	//vérification des lignes
 			if (winner != NO_PLAYER && winner != get_place_holder(game, i, 0))	//si il y a déjà un gagnant et que c'est pas le même
 				winner = NO_PLAYER;						//égalité : pas encore de gagnant
 			else
-				winner = get_place_holder(game, i, 0);	//le joueur qui a la ligne gagne
+				winner = get_place_holder(game, i, 0); //le joueur qui a la ligne gagne
+		}
 		
-		if (get_place_holder(game, 0, i) == get_place_holder(game, 1, i) == get_place_holder(game, 2, i))	//vérification des colonnes
+		if ((get_place_holder(game, 0, i) == get_place_holder(game, 1, i)) && (get_place_holder(game, 1, i) == get_place_holder(game, 2, i))){	//vérification des colonnes
 			if (winner != NO_PLAYER && winner != get_place_holder(game, 0, i))
 				winner = NO_PLAYER;						
 			else
 				winner = get_place_holder(game, 0, i);	//le joueur qui a la colonne gagne
+		}
 	}
 
 	return winner;

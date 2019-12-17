@@ -128,7 +128,7 @@ board deplacementPion(board game, player pl, int y, int x){
  * @param x -> le jpueur qui est en train de placer le pion
  * @return le plateau modifié
  */ 
-board placementPion(board game, player x){ 
+board gestionPion(board game, player x){ 
     coord cursor = {0, 0};
     int column=0, row=0;
     unsigned int pieceSize=0;
@@ -247,7 +247,7 @@ void TourJeu(player x, board game){
     affichagePlateau(game);
     affichageInventory(game);
 
-    game = placementPion(game, x);
+    game = gestionPion(game, x);
 }
 
 void Partie(player x, player y, board game){
