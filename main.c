@@ -32,8 +32,9 @@ void menu(){
     */
 
 
-   printf(CLEARSCR);
-   printf("\033[1;1f");
+    printf(CLEARSCR);
+    printf("\033[8;32;130t");
+    printf("\033[1;1f");
 
     printf("\n   %s   ___        _      _      _        _                   %s_      _      _\n", BLEU, ROUGE);
     printf("   %s  / _ \\ ___  | |__  | |__  | |  ___ | |_    %s__ _   ___  | |__  | |__  | |  ___  _ __  ___ \n", BLEU, ROUGE);

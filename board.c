@@ -13,8 +13,8 @@
 /**
  * @brief structure case pour le plateau
  * 
- * @brief content est un tableau de taille DIMENSIONS, chaque case de ce tableau correspond à une taille de pièce. 
- * On stocke dans ces case de tableau les numéros des joueurs à qui la case appartient.
+ * @brief content est un tableau de taille 3, chaque case de ce tableau correspond à une taille de pièce. 
+ * On stocke dans ces cases de tableau les numéros des joueurs à qui la case appartient.
  * exemple : J1 place une pièce moyenne; content[1] contient donc J1
  */
 typedef struct{
@@ -24,7 +24,7 @@ typedef struct{
 typedef struct{
 	player joueur;
 	int nbPieces[3];
-}house;
+} house;
 
 /**
  * @brief The board of the game, define it as you wish.
@@ -39,7 +39,7 @@ board new_game(){
 	for (int i=0; i<DIMENSIONS; i++){ 					//parcours des lignes
 		for (int j=0; j<DIMENSIONS; j++){ 				//parcours des colonnes
 			for (int k=0; k<DIMENSIONS; k++){ 			//parcours du contenu de la case en {i;j}
-				new_board->plateau[i][j].content[k]=0; 	//initialise le contenu de la case à 0 pour les pièces petites, moyennes et grandes
+				new_board->plateau[i][j].content[k] = NO_PLAYER; 	//initialise le contenu de la case à 0 pour les pièces petites, moyennes et grandes
 			}
 		}
 	}
@@ -54,28 +54,31 @@ board new_game(){
 
 size get_piece_size(board game, int row, int column){
 	size sMax = NONE;
-	case_s *c = &game->plateau[row][column];
+	case_s c = game->plateau[row][column];
 
 	for (int i = 0; i < 3; i++){
-		if (c->content[i] != NO_PLAYER){
-			if (i > sMax)
-				sMax = i+1;
+		if (c.content[i] != NO_PLAYER){
+			sMax = i+1;
 		}
 	}
 	return sMax;
 }
 
 player get_place_holder(board game, int row, int column){
-	case_s *c = &game->plateau[row][column];
-	return c->content[get_piece_size(game, row, column)-1];
+	case_s c = game->plateau[row][column];
+	size pSize = get_piece_size(game, row, column)-1;
+
+	if (pSize == -1)
+		pSize = NONE;
+	return c.content[pSize];
 }
 
 int get_nb_piece_in_house(board game, player checked_player, size piece_size){
-	int nbPieces=0;
-	if (checked_player != game->house[0].joueur || checked_player != game->house[1].joueur){
+	int nbPieces = 0;
+	if (checked_player != game->house[0].joueur && checked_player != game->house[1].joueur){
 		printf ("Le joueur saisi est invalide");
 	}else
-		nbPieces = game->house[checked_player].nbPieces[piece_size-1];
+		nbPieces = game->house[checked_player-1].nbPieces[piece_size-1];
 	return nbPieces;
 }
 
@@ -91,6 +94,7 @@ int place_piece(board game, player current_player, size piece_size, int line, in
 	else
 	{
 		game->plateau[line][column].content[piece_size-1] = current_player;
+		game->house[current_player-1].nbPieces[piece_size-1]--;
 		returnValue = 0;
 	}
 
@@ -108,8 +112,8 @@ int move_piece(board game, int source_line, int source_column, int target_line, 
 		returnValue = 3;
 	else
 	{
-		game->plateau[target_line][target_column].content[get_piece_size(game, source_line, source_column)-1] = game->plateau[source_line][source_column].content[get_piece_size(game, source_line, source_column)-1];
-		game->plateau[target_line][target_column].content[get_piece_size(game, source_line, source_column)-1] = 0;
+		game->plateau[target_line][target_column].content[sourceSize-1] = game->plateau[source_line][source_column].content[sourceSize-1];
+		game->plateau[source_line][source_column].content[sourceSize-1] = NO_PLAYER;
 		returnValue = 0;
 	}
 	return returnValue;
@@ -132,6 +136,20 @@ player get_winner(board game){
 			else
 				winner = get_place_holder(game, 0, i);	//le joueur qui a la colonne gagne
 		}
+	}
+
+	if ((get_place_holder(game, 0, 0) == get_place_holder(game, 1, 1)) && (get_place_holder(game, 1, 1) == get_place_holder(game, 2, 2))){
+		if (winner != NO_PLAYER && winner != get_place_holder(game, 0, 0))
+			winner = NO_PLAYER;						
+		else
+			winner = get_place_holder(game, 0, 0);	//le joueur qui a la diagonale gagne
+	}
+
+	if ((get_place_holder(game, 0, 2) == get_place_holder(game, 1, 1)) && (get_place_holder(game, 1, 1) == get_place_holder(game, 2, 0))){
+		if (winner != NO_PLAYER && winner != get_place_holder(game, 0, 2))
+			winner = NO_PLAYER;						
+		else
+			winner = get_place_holder(game, 0, 2);	//le joueur qui a la diagonale gagne
 	}
 
 	return winner;

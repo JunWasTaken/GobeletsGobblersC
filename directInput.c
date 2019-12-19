@@ -21,7 +21,7 @@ void initInputMode(struct termios *oldt){
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 }
 
-int resetInputMode(struct termios *oldt){
+void resetInputMode(struct termios *oldt){
     /*Réinitialise les anciens attributs du terminal*/
 	tcsetattr(STDIN_FILENO, TCSANOW, oldt);
 }

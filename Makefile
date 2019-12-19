@@ -3,10 +3,9 @@ CFLAGS=-Wall
 
 SOURCES=$(wildcard *.c)
 OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=ex1
+EXECUTABLE = gobblers
 
-##all: $(EXECUTABLE)
-##	./$(EXECUTABLE)
+all: $(EXECUTABLE) clean
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $(EXECUTABLE) -lm
@@ -15,7 +14,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm $(EXECUTABLE) $(OBJECTS)
+	rm $(OBJECTS)
 
 files:
 	$(shell echo $(SOURCES))

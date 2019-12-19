@@ -107,7 +107,7 @@ board deplacementPion(board game, player pl, int y, int x){
             break;
         case 3:
             printf("Entrée illégale : ");
-            if (x>3 || x>3)
+            if (x>3 || cursor.x>3)
                 printf("Ligne trop longue\n");
             else{
                 printf("Colonne trop longue\n");
@@ -130,7 +130,6 @@ board deplacementPion(board game, player pl, int y, int x){
  */ 
 board gestionPion(board game, player x){ 
     coord cursor = {0, 0};
-    int column=0, row=0;
     unsigned int pieceSize=0;
 
     printPlayer(x);
@@ -211,11 +210,11 @@ board gestionPion(board game, player x){
             
             if (pieceSize <= pSize){
                 moveCursorUnder(2);
-                printf("Choisissez une pièce plus grande                             ");
+                printf("Choisissez une pièce plus grande                                 ");
             }
             else if (!get_nb_piece_in_house(game, x, pieceSize)){
                 moveCursorUnder(2);
-                printf("Vous n'avez plus de pièces de cette taille                   ");
+                printf("Vous n'avez plus de pièces de cette taille                       ");
             }
             
         } while(!get_nb_piece_in_house(game, x, pieceSize) || pieceSize <= pSize);
@@ -240,9 +239,6 @@ board gestionPion(board game, player x){
 
 
 void TourJeu(player x, board game){
-    int choix = 0, column, row;
-    unsigned int pieceSize=0; 
-
     printf("\033[2J");                               //ANSI code : efface l'écran
     affichagePlateau(game);
     affichageInventory(game);
@@ -252,13 +248,12 @@ void TourJeu(player x, board game){
 
 void Partie(board game){
     player current = PLAYER_1, winner = 0;
-    int cpt = 0;
     do{
         TourJeu(current, game);
         current = next_player(current);
         winner = get_winner(game);
     }while (!(winner));
 
-    if (winner != 0)
+    if (winner != NO_PLAYER)
         printWinner(game, winner);
 }
