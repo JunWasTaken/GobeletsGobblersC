@@ -250,15 +250,15 @@ void TourJeu(player x, board game){
     game = gestionPion(game, x);
 }
 
-void Partie(player x, player y, board game){
-    player current = x, winner=0;
+void Partie(board game){
+    player current = PLAYER_1, winner = 0;
     int cpt = 0;
     do{
         TourJeu(current, game);
         current = next_player(current);
-        winner=get_winner(game);
+        winner = get_winner(game);
     }while (!(winner));
 
-    if (winner!=0)
+    if (winner != 0)
         printWinner(game, winner);
 }

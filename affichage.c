@@ -153,7 +153,7 @@ void printPlayer(player pl){
 	else 
 		color = ROUGE;
 
-	movePrintCursor((coord){STARTX + GRID_SIZE, STARTY + GRID_SIZE - 5});		//Retour en dessous du plateau
+	movePrintCursor((coord){STARTX + GRID_SIZE, STARTY + GRID_SIZE - 5});
     printf("%sJoueur %d%s", color, pl, BLANC);
 }
 

@@ -12,7 +12,7 @@ int main(){
 }
 
 void menu(){
-    board plateau;
+    board game;
     /*player J1 = 1;
     player J2 = 2;
     printf("Bonjour et bienvenue dans Gobblet Gobblers, que voulez-vous faire ?\n1-Lancer une nouvelle partie\n2-gerer vos sauvegardes\n3-quitter\n");
@@ -31,14 +31,6 @@ void menu(){
     }
     */
 
-    /*
-    printf("  ________        ___.   ___.    .__            __                    ___.   ___.            .__                         \\n");
-    printf(" /  _____/   ____ \\_ |__ \\_ |__  |  |    ____ _/  |_     ____    ____ \\_ |__ \\_ |__    ____  |  |    ____ _______  ______\\n");
-    printf("/   \\  ___  /  _ \\ | __ \\ | __ \\ |  |  _/ __ \\\\   __\\   / ___\\  /  _ \\ | __ \\ | __ \\ _/ __ \\ |  |  _/ __ \\\\_  __ \\/  ___/\\n");
-    printf("\\    \\_\\  \\(  <_> )| \\_\\ \\| \\_\\ \\|  |__\\  ___/ |  |    / /_/  >(  <_> )| \\_\\ \\| \\_\\ \\\\  ___/ |  |__\\  ___/ |  | \\/\\___ \\ \\n");
-    printf(" \\______  / \\____/ |___  /|___  /|____/ \\___  >|__|    \\___  /  \\____/ |___  /|___  / \\___  >|____/ \\___  >|__|  /____  >\\n");
-    printf("        \\/             \\/     \\/            \\/        /_____/              \\/     \\/      \\/            \\/            \\/ \n");
-    */
 
    printf(CLEARSCR);
    printf("\033[1;1f");
@@ -54,7 +46,6 @@ void menu(){
 
     getchar();
 
-    plateau = new_game();
-    plateau->house[0].joueur;
-    Partie(J1, J2, plateau);
+    game = new_game();
+    Partie(game);
 }

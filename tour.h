@@ -27,10 +27,8 @@ int choiceSelector(int x);
  * @brief fonction gérant un tour lors d'une partie, c'est la fonction principale du programme
  * Elle fait appel à toutes les autres fonction de tour.c et de affichage.c
  * 
- * @param x -> Le joueur 1, celui qui sera appelé en premier par la fonction
- * @param y -> le second joueur, il sera utilisé lors du changement de joueur
  * @param game -> le plateau du jeu
  */
-void Partie(player x, player y, board game);
+void Partie(board game);
 
 #endif

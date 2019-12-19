@@ -18,7 +18,7 @@
  * exemple : J1 place une pièce moyenne; content[1] contient donc J1
  */
 typedef struct{
-	player content[DIMENSIONS];
+	player content[3];
 } case_s;
 
 typedef struct{
@@ -123,7 +123,7 @@ player get_winner(board game){
 			if (winner != NO_PLAYER && winner != get_place_holder(game, i, 0))	//si il y a déjà un gagnant et que c'est pas le même
 				winner = NO_PLAYER;						//égalité : pas encore de gagnant
 			else
-				winner = get_place_holder(game, i, 0); //le joueur qui a la ligne gagne
+				winner = get_place_holder(game, i, 0); 	//le joueur qui a la ligne gagne
 		}
 		
 		if ((get_place_holder(game, 0, i) == get_place_holder(game, 1, i)) && (get_place_holder(game, 1, i) == get_place_holder(game, 2, i))){	//vérification des colonnes
