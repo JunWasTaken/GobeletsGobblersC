@@ -49,4 +49,5 @@ void menu(){
 
     game = new_game();
     Partie(game);
+    destroy_game(game);
 }
