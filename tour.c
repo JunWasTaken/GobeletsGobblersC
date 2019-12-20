@@ -28,6 +28,40 @@ int choiceSelector(int x){
     return returnValue;
 }
 
+void cursorInput(board game, coord *cursor){
+    char c;
+    while((c=getchar()) != '\n'){
+        if (c == '\033'){           //Si c'est un escape code
+            getchar();              //Enlève le [
+            switch(getchar()){      //Le vrai code
+                case 'A':
+                    if (cursor->y > 0){
+                        cursor->y--;
+                        drawCursor(game, cursor->y, cursor->x);
+                    }
+                    break;
+                case 'B':
+                    if (cursor->y < 2){
+                        cursor->y++;
+                        drawCursor(game, cursor->y, cursor->x);
+                    }
+                    break;
+                case 'C':
+                    if (cursor->x < 2){
+                        cursor->x++;
+                        drawCursor(game, cursor->y, cursor->x);
+                    }
+                    break;
+                case 'D':
+                    if (cursor->x > 0){
+                        cursor->x--;
+                        drawCursor(game, cursor->y, cursor->x);
+                    }
+            }
+        }
+    }
+}
+
 /**
  * @brief fonction gérant le déplacement des pions
  * 
@@ -49,41 +83,11 @@ board deplacementPion(board game, player pl, int y, int x){
     drawCursor(game, 0, 0);
 
     struct termios oldt;
-    char c;
     
     initInputMode(&oldt);
 
     do{
-        while((c=getchar()) != '\n'){
-            if (c == '\033'){           //Si c'est un escape code
-                getchar();              //Enlève le [
-                switch(getchar()){      //Le vrai code
-                    case 'A':
-                        if (cursor.y > 0){
-                            cursor.y--;
-                            drawCursor(game, cursor.y, cursor.x);
-                        }
-                        break;
-                    case 'B':
-                        if (cursor.y < 2){
-                            cursor.y++;
-                            drawCursor(game, cursor.y, cursor.x);
-                        }
-                        break;
-                    case 'C':
-                        if (cursor.x < 2){
-                            cursor.x++;
-                            drawCursor(game, cursor.y, cursor.x);
-                        }
-                        break;
-                    case 'D':
-                        if (cursor.x > 0){
-                            cursor.x--;
-                            drawCursor(game, cursor.y, cursor.x);
-                        }
-                }
-            }
-        }
+        cursorInput(game, &cursor);
 
         if (x == cursor.x && y == cursor.y){
             moveCursorUnder(2);
@@ -136,42 +140,12 @@ board gestionPion(board game, player x){
     drawCursor(game, 0, 0);
 
     struct termios oldt;
-    char c;
     
     initInputMode(&oldt);
 
     int pSize, possible = 1, otherColor;
     do {
-        while((c=getchar()) != '\n'){
-            if (c == '\033'){           //Si c'est un escape code
-                getchar();              //Enlève le [
-                switch(getchar()){      //Le vrai code
-                    case 'A':
-                        if (cursor.y > 0){
-                            cursor.y--;
-                            drawCursor(game, cursor.y, cursor.x);
-                        }
-                        break;
-                    case 'B':
-                        if (cursor.y < 2){
-                            cursor.y++;
-                            drawCursor(game, cursor.y, cursor.x);
-                        }
-                        break;
-                    case 'C':
-                        if (cursor.x < 2){
-                            cursor.x++;
-                            drawCursor(game, cursor.y, cursor.x);
-                        }
-                        break;
-                    case 'D':
-                        if (cursor.x > 0){
-                            cursor.x--;
-                            drawCursor(game, cursor.y, cursor.x);
-                        }
-                }
-            }
-        }
+        cursorInput(game, &cursor);
 
         otherColor = (get_place_holder(game, cursor.y, cursor.x) != x);
         if (otherColor){
