@@ -6,28 +6,28 @@
 void initInputMode(struct termios *oldt){  
     static struct termios newt;
 
-    /*tcgetattr récupère les attributs du terminal
-    STDIN_FILENO permet de les copier dans oldt*/
+    /*tcgetattr fetches the terminal's attributes
+    STDIN_FILENO copies them into oldt*/
     tcgetattr(STDIN_FILENO, oldt);
     newt = *oldt;
 
-    /*ICANON permet normalement de gérer les entrées une ligne à la fois
-    donc le désactive
-    et ECHO aussi pour pas afficher les entrées*/
+    /*ICANON enables the usual whole-line input
+    so it gets disabled
+    ECHO is disabled too to stop the inputs from being displayed*/
     newt.c_lflag &= ~(ICANON | ECHO);          
 
-    /*Ecriture des attributs dans le terminal
-    TCSANOW permet de les écrire immédiatement*/
+    /*tcsetattr writes attributes into the terminal
+    TCSANOW allows it to be done instantly*/
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 }
 
 void resetInputMode(struct termios *oldt){
-    /*Réinitialise les anciens attributs du terminal*/
+    //Resets the terminal's old attributes
 	tcsetattr(STDIN_FILENO, TCSANOW, oldt);
 }
 
 
-/*
+/*      --MAIN EXAMPLE--
 int main(){
 	
 	static struct termios oldt;
@@ -35,20 +35,20 @@ int main(){
 	initInputMode(&oldt);
 
     while((c=getchar()) != '\n'){
-        if (c == '\033'){           //Si c'est un escape code
-            getchar();              //Enlève le [
-            switch(getchar()){      //Le vrai code
+        if (c == '\033'){               //If the input is an escape code
+            getchar();                  //Removes the [
+            switch(getchar()){          //Gets the actual code
                 case 'A':
-                    printf("haut");
+                    printf("up");
                     break;
                 case 'B':
-                    printf("bas");
+                    printf("down");
                     break;
                 case 'C':
-                    printf("droite");
+                    printf("right");
                     break;
                 case 'D':
-                    printf("gauche");
+                    printf("left");
             }
         }
     }

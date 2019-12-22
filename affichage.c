@@ -6,17 +6,21 @@
 #include "tour.h"
 
 
-#define GRID_SIZE 25            //Multiple de 6 + 1
+#define GRID_SIZE 25            //Must be equal to 6k + 1
 #define STARTX 3
 #define STARTY 40
 
-
+/**
+ * @brief Moves the shell cursor to another position before printing.
+ * 
+ * @param pos the position to move the cursor
+ */
 void movePrintCursor(coord pos){
     printf("\033[%d;%df", pos.x, pos.y);
 }
 
 
-void afficheVide(){
+void printBlank(){
     int n = GRID_SIZE;
     int a = 0, b = n/3, c = (2*n)/3, d = n-1;       //Début, 1/3, 2/3, fin : tracé des lignes
 
@@ -86,7 +90,14 @@ void afficheVide(){
     movePrintCursor(printPos);
 }
 
-
+/**
+ * @brief prints a circle at a given position in the shell
+ * 
+ * @param x the line of the top left corner
+ * @param y the column of the top left corner
+ * @param r the circle's radius
+ * @param width the width of the square in which the circle is printed
+ */
 void drawCircle(int x, int y, int r, int width){
     float mid = width / 2;
     for (int i = 0; i < width+1; i++) {
@@ -104,7 +115,14 @@ void drawCircle(int x, int y, int r, int width){
 	}
 }
 
-
+/**
+ * @brief Handles the printing of a piece
+ * 
+ * @param pl the piece's owner
+ * @param siz the piece's size
+ * @param row the piece's row
+ * @param column the piece's column
+ */
 void drawPiece(player pl, size siz, int row, int column){
     int width = (GRID_SIZE-4)/3;
 
@@ -134,8 +152,8 @@ void drawPiece(player pl, size siz, int row, int column){
 }
 
 
-void affichagePlateau(board game){
-    afficheVide();
+void printBoard(board game){
+    printBlank();
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
             if (get_piece_size(game, i, j) != NONE)
@@ -157,6 +175,7 @@ void printPlayer(player pl){
     printf("%sJoueur %d%s", color, pl, BLANC);
 }
 
+
 void moveCursorUnder(int n){
 	movePrintCursor((coord){STARTX + GRID_SIZE + n, STARTY});
 }
@@ -171,14 +190,14 @@ void printWinner(board game, player pl){
 		color = ROUGE;
 
 	printf(CLEARSCR);
-	affichagePlateau(game);
+	printBoard(game);
 	movePrintCursor((coord){STARTX + GRID_SIZE + 2, STARTY});
     printf("    Partie terminée, le %sJoueur %d%s a gagné !\n\n", color, pl, BLANC);
 }
 
 
 void drawCursor(board game, int x, int y){
-    affichagePlateau(game);
+    printBoard(game);
     int width = (GRID_SIZE-4)/3;
 
     int posx = 1 + STARTX + (x * GRID_SIZE)/3;
@@ -211,7 +230,7 @@ void drawCursor(board game, int x, int y){
     printf(BLANC);
 }
 
-void affichageInventory(board game){
+void printHouses(board game){
     coord pos;
 	char* color;
 	for (int x = 1; x <= 2; x++){

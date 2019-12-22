@@ -4,37 +4,13 @@
 #include "board.h"
 #include "tour.h"
 
-void menu();
 
 int main(){
-    menu();
-    return 0;
-}
-
-void menu(){
     board game;
-    /*player J1 = 1;
-    player J2 = 2;
-    printf("Bonjour et bienvenue dans Gobblet Gobblers, que voulez-vous faire ?\n1-Lancer une nouvelle partie\n2-gerer vos sauvegardes\n3-quitter\n");
-    x = choiceSelector(3);
-    switch(x){
-        case 1:
-            plateau = new_game();
-            printf("plateau cree\n");
-            Partie(J1, J2, plateau);
-            break;
-        case 2:
-            printf("chargement des sauvegardes\n");
-            break;
-        default:
-            printf("Au revoir.\n");
-    }
-    */
 
-
-    printf(CLEARSCR);
-    printf("\033[8;32;130t");
-    printf("\033[1;1f");
+    printf(CLEARSCR);                   //Clears shell
+    printf("\033[8;32;130t");           //Sets shell window size to (32, 130)
+    printf("\033[1;1f");                //Moves cursor to (1,1)
 
     printf("\n   %s   ___        _      _      _        _                   %s_      _      _\n", BLEU, ROUGE);
     printf("   %s  / _ \\ ___  | |__  | |__  | |  ___ | |_    %s__ _   ___  | |__  | |__  | |  ___  _ __  ___ \n", BLEU, ROUGE);
@@ -48,6 +24,8 @@ void menu(){
     getchar();
 
     game = new_game();
-    Partie(game);
+    playGame(game);
     destroy_game(game);
+
+    return 0;
 }

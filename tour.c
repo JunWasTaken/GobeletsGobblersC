@@ -4,36 +4,29 @@
 #include "affichage.h"
 #include "directInput.h"
 
+
 typedef struct{
     int x;
     int y;
 } coord;
 
-int choiceSelector(int x){ 
-    int choix;
-    int returnValue=0;
-    
-    do{
-        scanf("%d", &choix);
-        while(getchar() != '\n');
-        if (choix >= 1 && choix <= x){
-            returnValue = choix;
-        }
-        else
-        {
-            printf("Veuillez saisir une valeur valide\n");
-        }
-    }while(choix < 1 || choix > x);
-    printf("\n");
-    return returnValue;
-}
-
+/**
+ * @brief Waits for user inputs to move the game cursor, in order to place or move a piece.
+ * 
+ * Uses directInput.c to initialize real-time single character input.
+ * 
+ * Requires a struct termios to be created 
+ * and InitInputMode to be called on it beforehand.
+ * 
+ * ResetInputMode must be called on the termios once a correct input is received,
+ * to restore normal whole-line input.
+ */
 void cursorInput(board game, coord *cursor){
     char c;
     while((c=getchar()) != '\n'){
-        if (c == '\033'){           //Si c'est un escape code
-            getchar();              //Enlève le [
-            switch(getchar()){      //Le vrai code
+        if (c == '\033'){               //If the input is an escape code
+            getchar();                  //Removes the [
+            switch(getchar()){          //Gets the actual code
                 case 'A':
                     if (cursor->y > 0){
                         cursor->y--;
@@ -63,21 +56,20 @@ void cursorInput(board game, coord *cursor){
 }
 
 /**
- * @brief fonction gérant le déplacement des pions
+ * @brief Moves a piece to another place
  * 
- * La fonction demande d'abord à l'utilisateur de saisir les coordonnées de la case à prendre le pion,
- * elle lui demande ensuite de saisir les coordonnées de destination. 
+ * The function is called when a player selects one of his own pieces with the game cursor
+ * and then uses that cursor again to select the target place
  * 
- * Elle appelle la fonction move_piece de board.h et affiche un commentaire correspondant au résultat de cette dernière
+ * move_piece is then called and an error message is displayed if the piece can't be moved.
  * 
- * @param game -> le plateau que nous allons utiliser pour déplacer les pièces 
- * @param pl -> le joueur dont c'est le tour, il est utilisé pour voir si la pièce à la case choisie lui appartient bien
- * @param y -> la ligne de la pièce à déplacer
- * @param x -> la colonne de la pière à déplacer
+ * @param game the board in which the piece is moved
+ * @param pl the player who is trying to move a piece
+ * @param y the line of the piece to move
+ * @param x the column of the piece to move
  * 
- * @return le plateau modifié
  */
-board deplacementPion(board game, player pl, int y, int x){
+void startMovePiece(board game, player pl, int y, int x){
     coord cursor = {0, 0};
 
     drawCursor(game, 0, 0);
@@ -91,7 +83,7 @@ board deplacementPion(board game, player pl, int y, int x){
 
         if (x == cursor.x && y == cursor.y){
             moveCursorUnder(2);
-            printf("Veuillez choisir une autre case                             ");
+            printf("Veuillez choisir une case différente                          ");
         }
         else if (get_piece_size(game, cursor.y, cursor.x) >= get_piece_size(game, y, x)){
             moveCursorUnder(2);
@@ -117,26 +109,29 @@ board deplacementPion(board game, player pl, int y, int x){
                 printf("Colonne trop longue\n");
             }
     }
-
-    return game;
 }
 
 /**
- * @brief fonction gérant le placement d'une pièce sur le plateau
+ * @brief Places or starts moving a piece
  * 
- * La fonction commence par demander à l'utilisateur de saisir la taille de la pièce 
- * puis les coordonnées de la case de destination. Elle appelle ensuite la fonction place_piece de board.h.
- * Elle affiche un résultat en fonction du résultat de cette dernière.
+ * The function uses the game input cursor to select a place.
  * 
- * @param game -> le plateau sur lequel le pion sera placé
- * @param x -> le jpueur qui est en train de placer le pion
- * @return le plateau modifié
+ * If the place is empty or occupied by another player's piece,
+ * it will try to place a new one.
+ * 
+ * If the place contains a piece owned by the player, it will try to move it.
+ * 
+ * An error message may be displayed if something goes wrong.
+ * 
+ * @param game the board on which the piece will be placed
+ * @param pl the player trying to place or move a piece
+ * 
  */ 
-board gestionPion(board game, player x){ 
+void tryPlacePiece(board game, player pl){ 
     coord cursor = {0, 0};
     unsigned int pieceSize=0;
 
-    printPlayer(x);
+    printPlayer(pl);
     drawCursor(game, 0, 0);
 
     struct termios oldt;
@@ -147,7 +142,7 @@ board gestionPion(board game, player x){
     do {
         cursorInput(game, &cursor);
 
-        otherColor = (get_place_holder(game, cursor.y, cursor.x) != x);
+        otherColor = (get_place_holder(game, cursor.y, cursor.x) != pl);
         if (otherColor){
             pSize = get_piece_size(game, cursor.y, cursor.x);
             if (pSize == 3){
@@ -156,14 +151,14 @@ board gestionPion(board game, player x){
             else {
                 possible = 0;
                 for (int i = pSize+1; i <= 3; i++){
-                    if (get_nb_piece_in_house(game, x, i) > 0)
+                    if (get_nb_piece_in_house(game, pl, i) > 0)
                         possible = 1;
                 }
             }
 
             if (!possible){
                 moveCursorUnder(2);
-                printf("Vous ne pouvez rien placer sur cette pièce                ");
+                printf("Vous ne pouvez rien placer sur cette pièce                           ");
             }
         }
         else{
@@ -172,58 +167,52 @@ board gestionPion(board game, player x){
 
     } while (!possible);
 
-    if (otherColor){      //Placement nouvelle pièce
+    if (otherColor){			//Places new piece
 
-        printf("Quelle taille de pièce ? Petite (1), Moyenne (2) ou Grande (3) : ");
+        printf("Quelle taille de pièce ? Petite (1), Moyenne (2) ou Grande (3)       ");
         
+        int res;
         do{
             do{
                 pieceSize = getchar();
             } while (pieceSize != '1' && pieceSize != '2' && pieceSize != '3');
             pieceSize -= '0';
-            
-            if (pieceSize <= pSize){
-                moveCursorUnder(2);
-                printf("Choisissez une pièce plus grande                                 ");
+
+            res = place_piece(game, pl, pieceSize, cursor.y, cursor.x);
+            switch (res){
+                case 1:
+                    moveCursorUnder(2);
+                    printf("Vous n'avez plus de pièces de cette taille                           ");
+                    break;
+                case 2:
+                    moveCursorUnder(2);
+                    printf("Choisissez une pièce plus grande                                     ");
             }
-            else if (!get_nb_piece_in_house(game, x, pieceSize)){
-                moveCursorUnder(2);
-                printf("Vous n'avez plus de pièces de cette taille                       ");
-            }
             
-        } while(!get_nb_piece_in_house(game, x, pieceSize) || pieceSize <= pSize);
+            
+        } while(res);
         resetInputMode(&oldt);
-            
-        int res = place_piece(game, x, pieceSize, cursor.y, cursor.x);
-        switch (res){
-            case 2:
-                printf("La pièce est trop petite pour être placée\n");
-                break;
-            case 3:
-                printf("Position invalide\n");
-        }
     }
     else {
         resetInputMode(&oldt);
         printf(" Selectionnez la case où déplacer la pièce");
-        game = deplacementPion(game, x, cursor.y, cursor.x);
+        startMovePiece(game, pl, cursor.y, cursor.x);
     }
-    return game;
 }
 
 
-void TourJeu(player x, board game){
-    printf("\033[2J");                               //ANSI code : efface l'écran
+void gameTurn(player x, board game){
+    printf("\033[2J");                               //ANSI code : clears screen
     affichagePlateau(game);
     affichageInventory(game);
 
-    game = gestionPion(game, x);
+    tryPlacePiece(game, x);
 }
 
-void Partie(board game){
+void playGame(board game){
     player current = PLAYER_1, winner = 0;
     do{
-        TourJeu(current, game);
+        gameTurn(current, game);
         current = next_player(current);
         winner = get_winner(game);
     }while (!(winner));

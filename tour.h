@@ -8,27 +8,23 @@
 #define BLANC "\033[37m"
 #define CLEARSCR "\033[2J"
 
+
+/**
+ * @brief A coordinate structure, holds x and y positions.
+ * 
+ * Mainly used to move the shell cursor.
+ */
 typedef struct{
 	int x; 
 	int y;
 } coord;
 
-/**
- * @brief fonction permettant de faire des choix allant de 1 à une borne x définie par l'utilisateur
- * 
- * Cette fonction est très utilisée dans le programme puisque l'utilisateur est amenée à faire de nombreux choix
- * 
- * @param x -> un entier définissant la borne
- * @return la valeur choisie par l'utilisateur si elle rentre 
- */
-int choiceSelector(int x);
 
 /**
- * @brief fonction gérant un tour lors d'une partie, c'est la fonction principale du programme
- * Elle fait appel à toutes les autres fonction de tour.c et de affichage.c
+ * @brief The main function, handles the game's turns.
  * 
- * @param game -> le plateau du jeu
+ * @param game the board on which to play the game
  */
-void Partie(board game);
+void playGame(board game);
 
 #endif
