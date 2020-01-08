@@ -3,6 +3,6 @@
 
 #include "board.h"
 
-void tourBot(board game);
+void stoopBot(board game);
 
 #endif

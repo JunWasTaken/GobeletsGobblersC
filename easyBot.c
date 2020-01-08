@@ -3,27 +3,27 @@
 #include <stdlib.h>
 #include <time.h>
 
-coord selectCase(){
-    coord casePlateau;
+coord selectPlace(){
+    coord place;
     srand(time(NULL));
 
-    casePlateau.x = rand()%3;
-    casePlateau.y = rand()%3;
+    place.x = rand()%3;
+    place.y = rand()%3;
 
-    return casePlateau;
+    return place;
 }
 
-void tourBot(board game, player pl){
-    coord casePlateau;
+void stoopBot(board game, player pl){
+    coord place;
     int pieceSize;
     int res;
 
     do{
-        casePlateau = selectCase();
-        pieceSize = get_piece_size(game, casePlateau.x, casePlateau.y);
+        place = selectPlace();
+        pieceSize = get_piece_size(game, place.x, place.y);
 
-        if (get_place_holder(game, casePlateau.x, casePlateau.y) != pl){
-            res = place_piece(game, pl, pieceSize+1, casePlateau.x, casePlateau.y);
+        if (get_place_holder(game, place.x, place.y) != pl){
+            res = place_piece(game, pl, pieceSize+1, place.x, place.y);
         }
     }while(res);
 }
