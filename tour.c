@@ -220,3 +220,21 @@ void playGame(board game){
     if (winner != NO_PLAYER)
         printWinner(game, winner);
 }
+
+void playGameBot(board game){
+    player current = PLAYER_1, winner = 0;
+    do{
+        if (current == PLAYER_1){
+            gameTurn(current, game);
+            current = next_player(current);
+            winner = get_winner(game);
+        }else{
+            tourBot(game);
+            current = next_player(current);
+            winner = get_winner(game);
+        }
+    }while (!(winner));
+
+    if (winner != NO_PLAYER)
+        printWinner(game, winner);
+}
