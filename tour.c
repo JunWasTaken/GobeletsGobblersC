@@ -3,6 +3,7 @@
 #include "board.h"
 #include "affichage.h"
 #include "directInput.h"
+#include "bot.h"
 
 
 typedef struct{
@@ -201,18 +202,18 @@ void tryPlacePiece(board game, player pl){
 }
 
 
-void gameTurn(player x, board game){
+void gameTurn(board game, player pl){
     printf("\033[2J");                               //ANSI code : clears screen
-    affichagePlateau(game);
-    affichageInventory(game);
+    printBoard(game);
+    printHouses(game);
 
-    tryPlacePiece(game, x);
+    tryPlacePiece(game, pl);
 }
 
 void playGame(board game){
     player current = PLAYER_1, winner = 0;
     do{
-        gameTurn(current, game);
+        gameTurn(game, current);
         current = next_player(current);
         winner = get_winner(game);
     }while (!(winner));
@@ -224,15 +225,12 @@ void playGame(board game){
 void playGameBot(board game){
     player current = PLAYER_1, winner = 0;
     do{
-        if (current == PLAYER_1){
-            gameTurn(current, game);
-            current = next_player(current);
-            winner = get_winner(game);
-        }else{
-            tourBot(game);
-            current = next_player(current);
-            winner = get_winner(game);
-        }
+        if (current == PLAYER_1)
+            gameTurn(game, current);
+        else
+            botPlay(game, current);
+        current = next_player(current);
+        winner = get_winner(game);
     }while (!(winner));
 
     if (winner != NO_PLAYER)

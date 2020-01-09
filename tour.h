@@ -27,4 +27,6 @@ typedef struct{
  */
 void playGame(board game);
 
+void playGameBot(board game);
+
 #endif
