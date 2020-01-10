@@ -228,7 +228,7 @@ void playGameBot(board game){
         if (current == PLAYER_1)
             gameTurn(game, current);
         else
-            botPlay(game, current);
+            botPlay(game, PLAYER_2);
         current = next_player(current);
         winner = get_winner(game);
     }while (!(winner));

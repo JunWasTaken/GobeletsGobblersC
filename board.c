@@ -126,30 +126,30 @@ player get_winner(board game){
 	player winner = NO_PLAYER;
 
 	for (int i = 0; i < 3; i++){		
-		if ((get_place_holder(game, i, 0) == get_place_holder(game, i, 1)) && (get_place_holder(game, i, 1) == get_place_holder(game, i, 2))){	//lines check
-			if (winner != NO_PLAYER && winner != get_place_holder(game, i, 0))	//if there's already a winner and it's not the same one...
+		if ((get_place_holder(game, i, 0) != NO_PLAYER) && (get_place_holder(game, i, 0) == get_place_holder(game, i, 1)) && (get_place_holder(game, i, 1) == get_place_holder(game, i, 2))){	//lines check
+			if (winner == next_player(get_place_holder(game, i, 0)))	//if there's already a winner and it's not the same one...
 				winner = NO_PLAYER;						//draw : no winner yet
 			else
 				winner = get_place_holder(game, i, 0); 	//else the player who owns the line wins
 		}
 		
-		if ((get_place_holder(game, 0, i) == get_place_holder(game, 1, i)) && (get_place_holder(game, 1, i) == get_place_holder(game, 2, i))){	//columns check
-			if (winner != NO_PLAYER && winner != get_place_holder(game, 0, i))
+		if ((get_place_holder(game, 0, i) != NO_PLAYER) && (get_place_holder(game, 0, i) == get_place_holder(game, 1, i)) && (get_place_holder(game, 1, i) == get_place_holder(game, 2, i))){	//columns check
+			if (winner == next_player(get_place_holder(game, 0, i)))
 				winner = NO_PLAYER;						
 			else
 				winner = get_place_holder(game, 0, i);
 		}
 	}
 
-	if ((get_place_holder(game, 0, 0) == get_place_holder(game, 1, 1)) && (get_place_holder(game, 1, 1) == get_place_holder(game, 2, 2))){		//diagonals check
-		if (winner != NO_PLAYER && winner != get_place_holder(game, 0, 0))
+	if ((get_place_holder(game, 0, 0) != NO_PLAYER) && (get_place_holder(game, 0, 0) == get_place_holder(game, 1, 1)) && (get_place_holder(game, 1, 1) == get_place_holder(game, 2, 2))){		//diagonals check
+		if (winner == next_player(get_place_holder(game, 0, 0)))
 			winner = NO_PLAYER;						
 		else
 			winner = get_place_holder(game, 0, 0);
 	}
 
-	if ((get_place_holder(game, 0, 2) == get_place_holder(game, 1, 1)) && (get_place_holder(game, 1, 1) == get_place_holder(game, 2, 0))){
-		if (winner != NO_PLAYER && winner != get_place_holder(game, 0, 2))
+	if ((get_place_holder(game, 0, 2) != NO_PLAYER) && (get_place_holder(game, 0, 2) == get_place_holder(game, 1, 1)) && (get_place_holder(game, 1, 1) == get_place_holder(game, 2, 0))){
+		if (winner == next_player(get_place_holder(game, 0, 2)))
 			winner = NO_PLAYER;						
 		else
 			winner = get_place_holder(game, 0, 2);
