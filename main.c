@@ -24,8 +24,8 @@ int main(){
     getchar();
 
     game = new_game();
-    playGame(game);
-    //playGameBot(game);
+    //playGame(game);
+    playGameBot(&game);
     destroy_game(game);
 
     return 0;

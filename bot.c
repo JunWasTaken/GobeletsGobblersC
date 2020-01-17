@@ -18,15 +18,21 @@ int testScore(board game, player pl){
 
 	for (int i = 0; i < 3; i++){
 		int cnt = 0;
-		int placePl;
+		player placePl;
+		printf("test-");
 		for (int j = 0; j < 3; j++){
 			placePl = get_place_holder(game, i, j);
-			if (placePl == pl)
+			if (placePl == pl){
 				cnt++;
-			else if (placePl == next_player(pl))
+				printf("ha");
+			}
+			else if (placePl == next_player(pl)){
 				cnt--;
+				printf("no");
+			}
 		}
-		if (cnt > 1)
+		printf("\n");
+		if (abs(cnt) > 1)
 			score += cnt;
 	}
 
@@ -49,9 +55,15 @@ board testMove(board game, player pl, int depth){
 
 								test = testMove(test, next_player(pl), depth-1);
 								int newScore = testScore(test, next_player(pl));
-								
-								if (newScore >= score){
+								printf("%d - %d\n", newScore, score);
+								if (newScore > score){
+									
 									newGame = test;
+								}
+								else if(newScore == score){
+									if (rand()%10 < 1){
+										newGame = test;
+									}
 								}
 								else {
 									destroy_game(test);
@@ -75,11 +87,9 @@ board testMove(board game, player pl, int depth){
 }
 
 
-int botPlay(board game, player pl){
-	int depth = 2;
+board botPlay(board game, player pl){
+	int depth = 1;
 	srand(time(NULL));
-	
-	game = testMove(game, pl, depth);
 
-	return 0;
+	return testMove(game, pl, depth);
 }

@@ -222,17 +222,17 @@ void playGame(board game){
         printWinner(game, winner);
 }
 
-void playGameBot(board game){
+void playGameBot(board *game){
     player current = PLAYER_1, winner = 0;
     do{
         if (current == PLAYER_1)
-            gameTurn(game, current);
+            gameTurn(*game, current);
         else
-            botPlay(game, PLAYER_2);
+            *game = botPlay(*game, PLAYER_2);
         current = next_player(current);
-        winner = get_winner(game);
+        winner = get_winner(*game);
     }while (!(winner));
 
     if (winner != NO_PLAYER)
-        printWinner(game, winner);
+        printWinner(*game, winner);
 }

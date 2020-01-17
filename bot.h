@@ -3,6 +3,6 @@
 
 #include "board.h"
 
-int botPlay(board game, player pl);
+board botPlay(board game, player pl);
 
 #endif

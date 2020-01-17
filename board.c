@@ -57,31 +57,42 @@ board new_game(){
 
 size get_piece_size(board game, int row, int column){
 	size sMax = NONE;
-	place c = game->gameBoard[row][column];
 
-	for (int i = 0; i < 3; i++){
-		if (c.content[i] != NO_PLAYER){
-			sMax = i+1;							//finds the highest size piece in the place
+	if (row >= 0 && column >= 0 && row < DIMENSIONS && column < DIMENSIONS){
+		place c = game->gameBoard[row][column];
+
+		for (int i = 0; i < 3; i++){
+			if (c.content[i] != NO_PLAYER){
+				sMax = i+1;							//finds the highest size piece in the place
+			}
 		}
 	}
 	return sMax;
 }
 
 player get_place_holder(board game, int row, int column){
-	place c = game->gameBoard[row][column];
-	size pSize = get_piece_size(game, row, column)-1;
+	player returnPl = NO_PLAYER;
 
-	if (pSize == -1)
-		pSize = NONE;
-	return c.content[pSize];				//finds the owner of the highest size piece
+    if (row >= 0 && column >= 0 && row < DIMENSIONS && column < DIMENSIONS){
+    	place c = game->gameBoard[row][column];
+    	size pSize = get_piece_size(game, row, column)-1;
+    
+    	if (pSize == -1)
+    		pSize = NONE;
+
+		returnPl = c.content[pSize];
+    }
+	return returnPl;				//finds the owner of the highest size piece
 }
 
 int get_nb_piece_in_house(board game, player checked_player, size piece_size){
 	int nbPieces = 0;
-	if (checked_player != game->house[0].joueur && checked_player != game->house[1].joueur){
-		printf ("Le joueur saisi est invalide");
-	}else
-		nbPieces = game->house[checked_player-1].nbPieces[piece_size-1];
+	if (checked_player > 0 && checked_player <= 2 && piece_size > 0 && piece_size <= 3){
+		if (checked_player != game->house[0].joueur && checked_player != game->house[1].joueur){
+			printf ("Le joueur saisi est invalide");
+		}else
+			nbPieces = game->house[checked_player-1].nbPieces[piece_size-1];
+	}
 	return nbPieces;
 }
 
@@ -92,7 +103,7 @@ int place_piece(board game, player current_player, size piece_size, int line, in
 		returnValue = 1;
 	else if (get_piece_size(game, line, column) >= piece_size)
 		returnValue = 2;
-	else if (line >= 3 || column >= 3)
+	else if (line >= DIMENSIONS || column >= DIMENSIONS || line < 0 || column < 0)
 		returnValue = 3;
 	else
 	{
@@ -106,19 +117,25 @@ int place_piece(board game, player current_player, size piece_size, int line, in
 
 int move_piece(board game, int source_line, int source_column, int target_line, int target_column){
 	int returnValue;
-	size sourceSize = get_piece_size(game, source_line, source_column);
-	if (!sourceSize)
-		returnValue = 1;
-	else if (get_piece_size(game, target_line, target_column) >= sourceSize)
-		returnValue = 2;
-	else if (source_line >=3 || source_column >= 3 || target_line >= 3 || target_column >=3)
-		returnValue = 3;
-	else
-	{
-		game->gameBoard[target_line][target_column].content[sourceSize-1] = game->gameBoard[source_line][source_column].content[sourceSize-1];
-		game->gameBoard[source_line][source_column].content[sourceSize-1] = NO_PLAYER;
-		returnValue = 0;
+
+	if (source_line >= 0 && source_column >= 0 && source_line < DIMENSIONS && source_column < DIMENSIONS && target_line >= 0 && target_column >= 0 && target_line < DIMENSIONS && target_column < DIMENSIONS){
+		size sourceSize = get_piece_size(game, source_line, source_column);
+
+		if (!sourceSize)
+			returnValue = 1;
+		else if (get_piece_size(game, target_line, target_column) >= sourceSize)
+			returnValue = 2;
+		else
+		{
+			game->gameBoard[target_line][target_column].content[sourceSize-1] = game->gameBoard[source_line][source_column].content[sourceSize-1];
+			game->gameBoard[source_line][source_column].content[sourceSize-1] = NO_PLAYER;
+
+			returnValue = 0;
+		}
 	}
+	else 
+		returnValue = 3;
+
 	return returnValue;
 }
 
